@@ -4,25 +4,23 @@
 
 package frc.robot.subsystems.Arm;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  private final CANSparkMax intakeMotor1;
-  private final CANSparkMax intakeMotor2;
+  private final Talon intakeMotor;
+  private final DigitalInput intakeSensor = new DigitalInput(0);
 
-  public Intake(int motorOneID, int motorTwoID) {
-    intakeMotor1 = new CANSparkMax(motorOneID, MotorType.kBrushless);
-    intakeMotor2 = new CANSparkMax(motorTwoID, MotorType.kBrushless);
+  public Intake(int motorID){
+    intakeMotor = new Talon(motorID);
+    intakeMotor.setSafetyEnabled(true);
   } 
 
   public void toggleIntake(boolean enable) {
-    intakeMotor1.setVoltage(enable ? Constants.intakeVoltage : 0);
-    intakeMotor2.setVoltage(enable ? Constants.intakeVoltage : 0);
+    intakeMotor.setVoltage(enable ? Constants.intakeVoltage : 0);
   }
 
   public class IntakeUntilNoteDetected extends Command {
@@ -32,16 +30,13 @@ public class Intake extends SubsystemBase {
     }
 
     @Override
-    public void execute() {}
-
-    @Override
     public void end(boolean interrupted) {
       toggleIntake(false);
     }
 
     @Override
     public boolean isFinished() {
-      return false;
+      return !intakeSensor.get();
     }
   }
 }

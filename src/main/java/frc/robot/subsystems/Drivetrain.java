@@ -34,6 +34,9 @@ public class Drivetrain extends SubsystemBase {
     left_motor = new Talon(left_motor_id);
     right_motor = new Talon(right_motor_id);
     this.deadzone = deadzone;
+
+    left_motor.setInverted(false);
+    right_motor.setInverted(true); 
   }
 
   @Override
@@ -41,19 +44,19 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void drive(double joystick_x, double joystick_y) {
-    if (Math.abs(joystick_x) > deadzone) {
-      left_motor.set(joystick_x * maxSpeed);
-      right_motor.set(-(joystick_x * maxSpeed));
+  public void drive(double percent_x, double percent_y) {
+    if (Math.abs(percent_x) > deadzone) {
+      left_motor.set(percent_x * maxSpeed);
+      right_motor.set(-(percent_x * maxSpeed));
     }
 
-    if (Math.abs(joystick_y) > deadzone) {
-      if (Math.signum(joystick_y) < 0) {
-        left_motor.set(-(joystick_y * maxSpeed));
-        right_motor.set(joystick_y * maxSpeed);
+    if (Math.abs(percent_y) > deadzone) {
+      if (Math.signum(percent_y) < 0) {
+        left_motor.set(-(percent_y * maxSpeed));
+        right_motor.set(percent_y * maxSpeed);
       } else {
-        left_motor.set(joystick_y * maxSpeed);
-        right_motor.set(-(joystick_y * maxSpeed));
+        left_motor.set(percent_y * maxSpeed);
+        right_motor.set(-(percent_y * maxSpeed));
       }
     }
   }

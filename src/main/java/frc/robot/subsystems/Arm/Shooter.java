@@ -4,22 +4,19 @@
 
 package frc.robot.subsystems.Arm;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
-
 import edu.wpi.first.wpilibj.Timer;
-
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-  private final CANSparkMax flyWheelMotor1;
-  private final CANSparkMax flyWheelMotor2;
+  private final Talon flyWheelMotor1;
+  private final Talon flyWheelMotor2;
   /** Creates a new Shooter. */
   public Shooter(int motorOneID, int motorTwoID) {
-    flyWheelMotor1 = new CANSparkMax(motorOneID, MotorType.kBrushless);
-    flyWheelMotor2 = new CANSparkMax(motorTwoID, MotorType.kBrushless);
+    flyWheelMotor1 = new Talon(motorOneID);
+    flyWheelMotor2 = new Talon(motorTwoID);
   }
 
   public void toggleShooter(boolean enable) {
