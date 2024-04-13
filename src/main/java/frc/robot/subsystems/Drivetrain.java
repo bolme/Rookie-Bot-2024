@@ -9,12 +9,16 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 
 public class Drivetrain extends SubsystemBase {
   private static Drivetrain instance = null;
   
   private final Talon left_motor;
   private final Talon right_motor;
+
+  private double left_motor_velo = 0;
+  private double right_motor_velo = 0;
 
   private final double deadzone;
 
@@ -42,24 +46,32 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (Math.abs(RobotContainer.controller1.getLeftX()) > deadzone && Math.abs(RobotContainer.controller1.getRightY()) > deadzone) {
+      left_motor_velo = 0; 
+      right_motor_velo = 0;
+    }
   }
 
   public void drive(double percent_x, double percent_y) {
-    if (Math.abs(percent_x) > deadzone) {
-      left_motor.set(percent_x * maxSpeed);
-      right_motor.set(-(percent_x * maxSpeed));
+    if (Math.abs(percent_y) > deadzone) {
+      left_motor_velo = percent_y * maxSpeed;
+      right_motor_velo = percent_y * maxSpeed;
     }
 
-    if (Math.abs(percent_y) > deadzone) {
-      if (Math.signum(percent_y) < 0) {
-        left_motor.set(-(percent_y * maxSpeed));
-        right_motor.set(percent_y * maxSpeed);
-      } else {
-        left_motor.set(percent_y * maxSpeed);
-        right_motor.set(-(percent_y * maxSpeed));
-      }
+    if (Math.abs(percent_x) > deadzone) {
+      left_motor_velo = Math.signum(percent_x) * percent_x * maxSpeed;
+      right_motor_velo = -Math.signum(percent_x) * percent_x * maxSpeed;
     }
+
+    left_motor.set(left_motor_velo);
+    right_motor.set(right_motor_velo);
   }
+  /*
+   * public void drive(double percent_x, double percent_y) {
+      left_motor.set(Math.abs(percent_y) > deadzone ? (percent_y * maxSpeed + (Math.abs(percent_x) > deadzone ? Math.signum(percent_x) * percent_x * maxSpeed : percent_y * maxSpeed)) / 2 : (Math.abs(percent_x) > deadzone ? Math.signum(percent_x) * percent_x * maxSpeed : 0));
+      right_motor.set(Math.abs(percent_y) > deadzone ? (percent_y * maxSpeed + (Math.abs(percent_x) > deadzone ? -Math.signum(percent_x) * percent_x * maxSpeed : percent_y * maxSpeed)) / 2 : (Math.abs(percent_x) > deadzone ? -Math.signum(percent_x) * percent_x * maxSpeed : 0));
+    }
+   */
 
   public double getGyroAngle() {
     return navX.getAngle();

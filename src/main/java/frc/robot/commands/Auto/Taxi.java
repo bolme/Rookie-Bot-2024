@@ -26,7 +26,10 @@ public class Taxi extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    globalTimer.reset();
+    globalTimer.start();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -38,6 +41,7 @@ public class Taxi extends Command {
   @Override
   public void end(boolean interrupted) {
     driveTrain.drive(0, 0);
+    globalTimer.stop();
   }
 
   // Returns true when the command should end.

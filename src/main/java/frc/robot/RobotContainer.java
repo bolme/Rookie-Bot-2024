@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.Auto.Taxi;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -53,6 +55,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // replace null with command to run during
-    return null;
+    return new Taxi(Drivetrain.getInstance());
   }
 }

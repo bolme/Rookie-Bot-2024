@@ -15,7 +15,7 @@ public class Arm extends SubsystemBase {
   private final Talon armMotorR;
   private final DutyCycleEncoder armEncoder = new DutyCycleEncoder(1);
 
-  private final PIDController angleController = new PIDController(1, 0, 0);
+  private final PIDController angleController = new PIDController(.2, 0, 0);
   private double setPoint;
   private double minAng = 0;
   private double maxAng = 180;
