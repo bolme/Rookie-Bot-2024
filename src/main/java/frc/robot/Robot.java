@@ -4,7 +4,11 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -17,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  private RobotContainer  m_robotContainer;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -25,9 +29,18 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    armRightMotor5.setInverted(false);
+    armLeftMotor6.setInverted(true);
+    driveBackRightMotor3.setInverted(false);
+    driveFrontRightMotor4.setInverted(false);
+    driveBackLeftMotor2.setInverted(true);
+    //Number 4 was factory reset, may fix it, may need to put it back to true (This is motor Back Left)
+    //Unsure why one is true, could be that it is hardcoded to be inverted- Jason
+    driveFrontLeftMotor1.setInverted(false);
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    
   }
 
   /**
@@ -48,7 +61,14 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    driveFrontRightMotor4.set(ControlMode.PercentOutput, 0);
+    driveFrontLeftMotor1.set(ControlMode.PercentOutput, 0);
+    driveBackRightMotor3.set(ControlMode.PercentOutput, 0);
+    driveBackRightMotor3.set(ControlMode.PercentOutput, 0);
+    armLeftMotor6.set(ControlMode.PercentOutput, 0);
+    armRightMotor5.set(ControlMode.PercentOutput, 0);
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -68,8 +88,19 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {}
 
+
+  public static TalonSRX driveBackRightMotor3 = new TalonSRX(3);
+  public static TalonSRX driveFrontRightMotor4 = new TalonSRX(4);
+  public static TalonSRX driveBackLeftMotor2 = new TalonSRX(2);
+  public static TalonSRX driveFrontLeftMotor1 = new TalonSRX(1);
+  
+  public static TalonSRX armLeftMotor6 = new TalonSRX(6);
+  public static TalonSRX armRightMotor5 = new TalonSRX(5);
+  XboxController controller = new XboxController(0);
+  
   @Override
   public void teleopInit() {
+    
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -81,10 +112,21 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+
+    driveFrontLeftMotor1.set(ControlMode.PercentOutput, controller.getLeftY() - controller.getRightX());
+    // driveBackLeftMotor2.set(ControlMode.PercentOutput, controller.getLeftY() - controller.getRightX());
+
+    // driveFrontRightMotor4.set(ControlMode.PercentOutput, controller.getLeftY() + controller.getRightX());
+    // driveBackRightMotor3.set(ControlMode.PercentOutput, controller.getLeftY() + controller.getRightX());
+
+    
+    
+  }
 
   @Override
   public void testInit() {
+    driveBackRightMotor3.set(ControlMode.PercentOutput, .5);
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }
