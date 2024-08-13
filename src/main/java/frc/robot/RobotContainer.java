@@ -22,12 +22,13 @@ import frc.robot.subsystems.Drivetrain;
 public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static final CommandXboxController controller1 = new CommandXboxController(Constants.kDriverControllerPort);
-
+  public static Drivetrain drivetrain;
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the trigger bindings
+    drivetrain = Drivetrain.getInstance();
     configureBindings();
   }
 

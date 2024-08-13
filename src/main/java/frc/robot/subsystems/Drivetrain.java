@@ -7,15 +7,18 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
 public class Drivetrain extends SubsystemBase {
   private static Drivetrain instance = null;
-  
-  private final Talon left_motor;
-  private final Talon right_motor;
+  private static DifferentialDrive differentialDrive;
+  private final WPI_TalonSRX left_motor;
+  private final WPI_TalonSRX left_follow_motor;
+  private final WPI_TalonSRX right_motor;
+  private final WPI_TalonSRX right_follow_motor;
 
   private double left_motor_velo = 0;
   private double right_motor_velo = 0;
@@ -29,42 +32,38 @@ public class Drivetrain extends SubsystemBase {
 
   public static Drivetrain getInstance() {
     if (instance == null) {
-      instance = new Drivetrain(1, 2, 0.1); 
+      instance = new Drivetrain(1, 2, 3, 4, 0.25); 
     }
       return instance; 
   }
 
-  private Drivetrain(int left_motor_id, int right_motor_id, double deadzone) {
-    left_motor = new Talon(left_motor_id);
-    right_motor = new Talon(right_motor_id);
-    this.deadzone = deadzone;
+  private Drivetrain(int left_motor_id, int secondary_left_id, int right_motor_id, int secondary_right_id, double deadzone) {
+    left_motor = new WPI_TalonSRX(left_motor_id);
+    right_motor = new WPI_TalonSRX(right_motor_id);
+    left_follow_motor = new WPI_TalonSRX(secondary_left_id);
+    right_follow_motor = new WPI_TalonSRX(secondary_right_id);
 
-    left_motor.setInverted(false);
-    right_motor.setInverted(true); 
+    left_follow_motor.follow(left_motor);
+    right_follow_motor.follow(right_motor);
+
+
+    differentialDrive = new DifferentialDrive(left_motor, right_motor);
+
+    this.deadzone = deadzone; 
+
+    left_motor.setInverted(true);
+    left_follow_motor.setInverted(true);
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    if (Math.abs(RobotContainer.controller1.getLeftX()) > deadzone && Math.abs(RobotContainer.controller1.getRightY()) > deadzone) {
-      left_motor_velo = 0; 
-      right_motor_velo = 0;
-    }
+
+    this.drive(RobotContainer.controller1.getRightX(), RobotContainer.controller1.getLeftY());
+
   }
 
   public void drive(double percent_x, double percent_y) {
-    if (Math.abs(percent_y) > deadzone) {
-      left_motor_velo = percent_y * maxSpeed;
-      right_motor_velo = percent_y * maxSpeed;
-    }
-
-    if (Math.abs(percent_x) > deadzone) {
-      left_motor_velo = Math.signum(percent_x) * percent_x * maxSpeed;
-      right_motor_velo = -Math.signum(percent_x) * percent_x * maxSpeed;
-    }
-
-    left_motor.set(left_motor_velo);
-    right_motor.set(right_motor_velo);
+    differentialDrive.arcadeDrive(percent_x, percent_y);
   }
   /*
    * public void drive(double percent_x, double percent_y) {
