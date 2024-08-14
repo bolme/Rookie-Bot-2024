@@ -19,7 +19,7 @@ public class Arm extends SubsystemBase {
 
   private final PIDController angleController = new PIDController(.2, 0, 0);
   private double setPoint;
-  private double minAng = 0.6;
+  private double minAng = 0.6; 
   private double maxAng = 0.91;
   public double deadzone = 0.1;
 
