@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
+import frc.robot.subsystems.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -23,12 +23,14 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static final CommandXboxController controller1 = new CommandXboxController(Constants.kDriverControllerPort);
   public static Drivetrain drivetrain;
+  public static Arm arm;
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the trigger bindings
     drivetrain = Drivetrain.getInstance();
+    arm = new Arm(5, 6);
     configureBindings();
   }
 
@@ -47,6 +49,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    
   }
 
   /**

@@ -58,7 +58,7 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
 
-    this.drive(RobotContainer.controller1.getRightX(), RobotContainer.controller1.getLeftY());
+    this.drive(RobotContainer.controller1.getLeftX(), RobotContainer.controller1.getLeftY());
 
   }
 

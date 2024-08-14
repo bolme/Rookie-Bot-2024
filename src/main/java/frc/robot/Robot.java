@@ -18,7 +18,7 @@ import frc.robot.subsystems.Drivetrain;
 public class Robot extends TimedRobot {
   private long robotStartTime = System.currentTimeMillis(); 
   private Command m_autonomousCommand;
-
+  public static boolean teleop;
   private RobotContainer m_robotContainer;
 
   /**
@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() { teleop = false; }
 
   @Override
   public void disabledPeriodic() {}
@@ -58,6 +58,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    teleop = false;
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -76,6 +78,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    teleop = true;
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -90,6 +93,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
+    teleop = false;
     CommandScheduler.getInstance().cancelAll();
   }
 

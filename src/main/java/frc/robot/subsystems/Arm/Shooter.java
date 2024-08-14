@@ -5,18 +5,18 @@
 package frc.robot.subsystems.Arm;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-  private final Talon flyWheelMotor1;
-  private final Talon flyWheelMotor2;
+  private final WPI_TalonSRX flyWheelMotor1;
+  private final WPI_TalonSRX flyWheelMotor2;
   /** Creates a new Shooter. */
   public Shooter(int motorOneID, int motorTwoID) {
-    flyWheelMotor1 = new Talon(motorOneID);
-    flyWheelMotor2 = new Talon(motorTwoID);
+    flyWheelMotor1 = new WPI_TalonSRX(motorOneID);
+    flyWheelMotor2 = new WPI_TalonSRX(motorTwoID);
   }
 
   public void toggleShooter(boolean enable) {
