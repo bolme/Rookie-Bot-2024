@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.IntakeShooter;
 import frc.robot.RobotContainer;
 
@@ -31,9 +32,14 @@ public class Robot extends TimedRobot implements Constants{
   public void teleopPeriodic() {
     /// IntakeShooter /*
     if(xbox.getLeftBumper()){
-      intakeShooter.setIntakeVoltage(0.5);
+      intakeShooter.setIntakeVoltage(10);
     }else{
-      intakeShooter.setIntakeVoltage(0.5);
+      intakeShooter.setIntakeVoltage(0);
+    }
+    if(xbox.getRightBumper()){
+      intakeShooter.setShooterVoltage(10);
+    }else{
+      intakeShooter.setShooterVoltage(0);
     }
     /// IntakeShooter */
   }
@@ -68,7 +74,11 @@ public class Robot extends TimedRobot implements Constants{
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    /// Arm /* 
+    Arm.getInstance().disable();
+    /// Arm */
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -76,12 +86,14 @@ public class Robot extends TimedRobot implements Constants{
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    /// Arm /* 
+    Arm.getInstance().enable();
+    /// Arm */
   }
 
   /** This function is called periodically during autonomous. */
@@ -95,6 +107,10 @@ public class Robot extends TimedRobot implements Constants{
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    /// Arm /* 
+    Arm.getInstance().enable();
+    /// Arm */
   }
   // IntakeAndShooter test = IntakeAndShooter.getInstance();
   @Override
@@ -102,6 +118,10 @@ public class Robot extends TimedRobot implements Constants{
     // test.intake(.6);
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+
+    /// Arm /* 
+    Arm.getInstance().enable();
+    /// Arm */
   }
 
   /** This function is called periodically during test mode. */

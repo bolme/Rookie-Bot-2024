@@ -9,8 +9,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AmpShoot;
 import frc.robot.commands.DefaultShoot;
 import frc.robot.commands.IntakeUntilNoteDetected;
+import frc.robot.commands.SetArmToAngle;
 import frc.robot.commands.SpeakerShoot;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeShooter;
+
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -34,13 +38,14 @@ public class RobotContainer {
 
   public static XboxController xbox = Robot.xbox;
   public static IntakeShooter intakeShooter;
+  public static Drivetrain drivetrain;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     intakeShooter = IntakeShooter.getInstance();
-
+    drivetrain = Drivetrain.getInstance();
     // camera = Camera.getInstance();
     // autoChooser.addOption("Auto1", new PathPlannerAuto("Auto1"));
     // autoChooser.addOption("Auto2", new PathPlannerAuto("Auto2"));
@@ -68,11 +73,20 @@ public class RobotContainer {
    */
   private void configureBindings() {
     /// IntakeShooter /* 
-    new JoystickButton(xbox, Button.kX.value).onTrue(new SpeakerShoot()).onFalse(new InstantCommand(()-> {intakeShooter.setShooterVoltage(0);}));
-    new JoystickButton(xbox, Button.kY.value).onTrue(new AmpShoot()).onFalse(new InstantCommand(()-> {intakeShooter.setShooterVoltage(0);}));
-    new JoystickButton(xbox, Button.kB.value).onTrue(new DefaultShoot(0)).onFalse(new InstantCommand(()-> {intakeShooter.setShooterVoltage(0);}));
-    new JoystickButton(xbox, Button.kA.value).onTrue(new IntakeUntilNoteDetected());
+    new JoystickButton(xbox, Button.kRightBumper.value).onTrue(new DefaultShoot(0)).onFalse(new InstantCommand(()-> {intakeShooter.setShooterVoltage(0);}));
+    // new JoystickButton(xbox, Button.kY.value).onTrue(new AmpShoot()).onFalse(new InstantCommand(()-> {intakeShooter.setShooterVoltage(0);}));
+    // new JoystickButton(xbox, Button.kB.value).onTrue(new DefaultShoot(0)).onFalse(new InstantCommand(()-> {intakeShooter.setShooterVoltage(0);}));
+     /**
+     * TODO: Wire up the color sensor and configure it in code
+     */
+    //new JoystickButton(xbox, Button.kA.value).onTrue(new IntakeUntilNoteDetected());
     /// IntakeShooter */
+
+    new JoystickButton(xbox, Button.kB.value).onTrue(new SetArmToAngle(174));
+    new JoystickButton(xbox, Button.kA.value).onTrue(new SetArmToAngle(158));
+
+    new JoystickButton(xbox, Button.kY.value).onTrue(new SetArmToAngle(125));
+    new JoystickButton(xbox, Button.kX.value).onTrue(new SetArmToAngle(75));
   } 
 
 

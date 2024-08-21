@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.SPI;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
@@ -33,16 +34,16 @@ public class Drivetrain extends SubsystemBase {
 
   public static Drivetrain getInstance() {
     if (instance == null) {
-      instance = new Drivetrain(1, 2, 3, 4, 0.25); 
+      instance = new Drivetrain(0.25); 
     }
       return instance; 
   }
 
-  private Drivetrain(int left_motor_id, int secondary_left_id, int right_motor_id, int secondary_right_id, double deadzone) {
-    left_motor = new WPI_TalonSRX(left_motor_id);
-    right_motor = new WPI_TalonSRX(right_motor_id);
-    left_follow_motor = new WPI_TalonSRX(secondary_left_id);
-    right_follow_motor = new WPI_TalonSRX(secondary_right_id);
+  private Drivetrain(double deadzone) {
+    left_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainLeader);
+    right_motor = new WPI_TalonSRX(Constants.MotorIds.rightDrivetrainLeader);
+    left_follow_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainFollower);
+    right_follow_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainLeader);
 
     left_follow_motor.follow(left_motor);
     right_follow_motor.follow(right_motor);
@@ -58,7 +59,7 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    this.drive(Robot.xbox.getLeftX(), Robot.xbox.getLeftY());
+    this.drive(Robot.xbox.getRightX(), Robot.xbox.getLeftY());
   }
 
   public void drive(double percent_x, double percent_y) {

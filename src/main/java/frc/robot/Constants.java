@@ -18,17 +18,20 @@ public interface Constants {
   public double encoderRotationToMeters = 2*Math.PI*((wheelDiameter/2)/gearRatio)/42;
   /// IntakeShooter */
 
-  /// Drivetrain /*
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+  public static class MotorIds {
+    public static final int leftDrivetrainLeader = 1;
+    public static final int leftDrivetrainFollower = 2;  
+    public static final int rightDrivetrainLeader = 4;
+    public static final int rightDrivetrainFollower = 3;
+
+    public static final int leftArm = 6;
+    public static final int rightArm = 5;
+
+    public static final int intake = 7;
+
+    public static final int leftFlywheel = 8;
+    public static final int rightFlywheel = 9;
   }
-  // No clue what this is supposed to b. In the drivetrain branch, Drivetrain.java 
-  // refrences Constants.DriveConstants.DriveMode.Normal, but doesn't have anything 
-  // in constants, so i just made this.
-  public static class DriveConstants {
-    public enum DriveMode {
-      Normal
-    }
-  }
-  /// Drivetrain */
+  public static final int ArmEncoderID = 0;
+
 }

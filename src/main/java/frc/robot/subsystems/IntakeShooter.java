@@ -8,6 +8,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.RelativeEncoder;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -27,37 +28,35 @@ public class IntakeShooter extends SubsystemBase {
     /**
      * The motor that controls the intake.
      */
-    public CANSparkMax intakeMotor = new CANSparkMax(11, MotorType.kBrushless);
+    public WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.MotorIds.intake);
 
     /**
      * Flywheel 1 on the shooter.
      */
-    public CANSparkMax shooterA = new CANSparkMax(9, MotorType.kBrushless);
-    /**
-     * Relative Encoder from flywheel 1's neo.
-     */
-    public RelativeEncoder encoderA = shooterA.getEncoder();
+    public WPI_TalonSRX shooterA = new WPI_TalonSRX(Constants.MotorIds.leftFlywheel);
+
 
     /**
      * Flywheel 2 on the shooter.
      */
-    public CANSparkMax shooterB = new CANSparkMax(10, MotorType.kBrushless);
-    /**
-     * Relative Encoder from flywheel 2's neo.
-     */
-    public RelativeEncoder encoderB = shooterB.getEncoder();
+    public WPI_TalonSRX shooterB = new WPI_TalonSRX(Constants.MotorIds.rightFlywheel);
+
 
     // Change the I2C port below to match the connection of the color sensor.
     /**
      * The I2C port the proximity sensor is connected to.
      */
-    private final I2C.Port i2cPort = I2C.Port.kOnboard;
+
+    /**
+     * TODO: Wire up the color sensor and configure it in code
+     */
+    //private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
     /** 
      * This object is constructed with an I2C port as a parameter.
      * This device will be automatically initialized with default parameters.
      */
-    private final ColorSensorV3 proximitySensor = new ColorSensorV3(i2cPort);
+    //private final ColorSensorV3 proximitySensor = new ColorSensorV3(i2cPort);
 
     /**
      * True if a piece is in the intake.
@@ -81,14 +80,16 @@ public class IntakeShooter extends SubsystemBase {
         matcher.addColorMatch(Color.kBlue);
         matcher.addColorMatch(Color.kGreen);
         matcher.addColorMatch(Color.kOrange);
-        intakeMotor.setIdleMode(IdleMode.kBrake);
     }
 
     /** 
      * Sets the speed of the intake motor through voltage.
      */
     public void setIntakeVoltage(double voltage) {
-        intakeMotor.setVoltage(voltage);
+        intakeMotor.setVoltage(-voltage);
+        if(voltage != 0) {
+            System.out.println("Intaking");
+        }
     }
 
 
@@ -98,6 +99,9 @@ public class IntakeShooter extends SubsystemBase {
     public void setShooterVoltage(double voltage) {
         shooterA.setVoltage(voltage);
         shooterB.setVoltage(voltage);
+        if(voltage != 0) {
+            System.out.println("Shooting");
+        }
     }
     
     /** 
@@ -111,11 +115,11 @@ public class IntakeShooter extends SubsystemBase {
     public void periodic() {
         
         // The method getProximity() returns a value 0 - 2047, with the closest being .
-        int detectedProximity = proximitySensor.getProximity();
-        proximityThresholdExeeded = matcher.matchClosestColor(proximitySensor.getColor()).color == Color.kOrange;
-        //Open Smart Dashboard to see the color detected by the sensor.
-        SmartDashboard.putNumber("Proximity", detectedProximity);
-        SmartDashboard.putBoolean("NoteDetected", proximityThresholdExeeded);
+        // int detectedProximity = proximitySensor.getProximity();
+        // proximityThresholdExeeded = matcher.matchClosestColor(proximitySensor.getColor()).color == Color.kOrange;
+        // //Open Smart Dashboard to see the color detected by the sensor.
+        // SmartDashboard.putNumber("Proximity", detectedProximity);
+        // SmartDashboard.putBoolean("NoteDetected", proximityThresholdExeeded);
     }
 //fuck you grace - joseph
 }
