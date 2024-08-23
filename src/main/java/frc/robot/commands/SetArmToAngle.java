@@ -6,7 +6,7 @@ import frc.robot.subsystems.Arm;
 public class SetArmToAngle extends Command {
     private final Arm arm;
     private final double targetAngle;
-    private final double kDefaultError = 2.0; // in degrees
+    private final double kDefaultError = 4.0; // in degrees
 
     /**
      * Creates a new SetArmToAngle command.
@@ -33,12 +33,14 @@ public class SetArmToAngle extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println("Internal Finish");
         // Do nothing because the arm's PIDController will keep the arm at the target angle
     }
 
     @Override
     public boolean isFinished() {
         // The command is finished when the arm is at the target angle
+        System.out.println(Math.abs(arm.getAngle() - targetAngle));
         return Math.abs(arm.getAngle() - targetAngle) < kDefaultError; 
     }
 }

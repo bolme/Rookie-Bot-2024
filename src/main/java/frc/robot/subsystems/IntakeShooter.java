@@ -46,17 +46,13 @@ public class IntakeShooter extends SubsystemBase {
     /**
      * The I2C port the proximity sensor is connected to.
      */
-
-    /**
-     * TODO: Wire up the color sensor and configure it in code
-     */
-    //private final I2C.Port i2cPort = I2C.Port.kOnboard;
+    private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
     /** 
      * This object is constructed with an I2C port as a parameter.
      * This device will be automatically initialized with default parameters.
      */
-    //private final ColorSensorV3 proximitySensor = new ColorSensorV3(i2cPort);
+    private final ColorSensorV3 proximitySensor = new ColorSensorV3(i2cPort);
 
     /**
      * True if a piece is in the intake.
@@ -115,11 +111,11 @@ public class IntakeShooter extends SubsystemBase {
     public void periodic() {
         
         // The method getProximity() returns a value 0 - 2047, with the closest being .
-        // int detectedProximity = proximitySensor.getProximity();
-        // proximityThresholdExeeded = matcher.matchClosestColor(proximitySensor.getColor()).color == Color.kOrange;
-        // //Open Smart Dashboard to see the color detected by the sensor.
-        // SmartDashboard.putNumber("Proximity", detectedProximity);
-        // SmartDashboard.putBoolean("NoteDetected", proximityThresholdExeeded);
+        int detectedProximity = proximitySensor.getProximity();
+        proximityThresholdExeeded = matcher.matchClosestColor(proximitySensor.getColor()).color == Color.kOrange;
+        //Open Smart Dashboard to see the color detected by the sensor.
+        SmartDashboard.putNumber("Proximity", detectedProximity);
+        SmartDashboard.putBoolean("NoteDetected", proximityThresholdExeeded);
     }
 //fuck you grace - joseph
 }

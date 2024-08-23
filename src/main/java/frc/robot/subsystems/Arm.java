@@ -55,7 +55,7 @@ public class Arm extends SubsystemBase {
 
   // Constants for the PID controller
   private static final double kDefaultP = .175; // Proportional gain
-  private static final double kDefaultI = 0.0; // Integral gain
+  private static final double kDefaultI = 0; // Integral gain
   private static final double kDefaultD = 0.003; // Derivative gain
 
   // Constants for the arm setpoint
@@ -65,7 +65,7 @@ public class Arm extends SubsystemBase {
 
   // Constants for the arm control
   private static final double kDefaultForwardParam = .325; // The default forward control parameter
-  private static final double kArmEncoderOffset = -152; // The offset of the arm encoder from the zero position                                                       // degrees
+  private static final double kArmEncoderOffset = 150 + 180; // The offset of the arm encoder from the zero position                                                       // degrees
 
   // Create a NetworkTable instance to enable the use of NetworkTables
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -182,8 +182,8 @@ public class Arm extends SubsystemBase {
     // check that the arm is not disabled
     if (is_disabled || !armEncoder.isConnected()) {
       System.err.println("Arm Encoder not connected. Disabled.");
-      armR.setVoltage(0);
-      armL.setVoltage(0);
+      //armR.setVoltage(0);
+      //armL.setVoltage(0);
       return;
     }
 
@@ -208,8 +208,8 @@ public class Arm extends SubsystemBase {
     inst.getTable(kNTArm).getEntry(kNTPidPower).setDouble(pid_power);
     inst.getTable(kNTArm).getEntry(kNTMotorSpeed).setDouble(voltage);
 
-    armR.setVoltage(voltage);
-    armL.setVoltage(voltage);
+    //armR.setVoltage(voltage);
+    //armL.setVoltage(voltage);
   }
 
   /**
@@ -236,7 +236,7 @@ public class Arm extends SubsystemBase {
    */
   public double getAngle() {
     // This is the only place where the arm encoder is read
-    double angle = 360 * (armEncoder.getAbsolutePosition()) + kArmEncoderOffset;
+    double angle = 360 * (-armEncoder.getAbsolutePosition()) + kArmEncoderOffset;
     inst.getTable(kNTArm).getEntry(kNTCurrentAngle).setDouble(angle);
     return angle;
   }

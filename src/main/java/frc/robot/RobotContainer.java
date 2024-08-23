@@ -73,7 +73,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     /// IntakeShooter /* 
-    new JoystickButton(xbox, Button.kRightBumper.value).onTrue(new DefaultShoot(0)).onFalse(new InstantCommand(()-> {intakeShooter.setShooterVoltage(0);}));
+    //new JoystickButton(xbox, ).onTrue(new DefaultShoot(0)).onFalse(new InstantCommand(()-> {intakeShooter.setShooterVoltage(0);}));
     // new JoystickButton(xbox, Button.kY.value).onTrue(new AmpShoot()).onFalse(new InstantCommand(()-> {intakeShooter.setShooterVoltage(0);}));
     // new JoystickButton(xbox, Button.kB.value).onTrue(new DefaultShoot(0)).onFalse(new InstantCommand(()-> {intakeShooter.setShooterVoltage(0);}));
      /**
@@ -83,8 +83,10 @@ public class RobotContainer {
     /// IntakeShooter */
 
     new JoystickButton(xbox, Button.kB.value).onTrue(new SetArmToAngle(174));
-    new JoystickButton(xbox, Button.kA.value).onTrue(new SetArmToAngle(158));
-
+    
+    new JoystickButton(xbox, Button.kRightBumper.value).onTrue(new DefaultShoot(10, 163));
+    new JoystickButton(xbox, Button.kLeftBumper.value).onTrue(new IntakeUntilNoteDetected());
+    
     new JoystickButton(xbox, Button.kY.value).onTrue(new SetArmToAngle(125));
     new JoystickButton(xbox, Button.kX.value).onTrue(new SetArmToAngle(75));
   } 

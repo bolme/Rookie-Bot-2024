@@ -31,16 +31,7 @@ public class Robot extends TimedRobot implements Constants{
   @Override
   public void teleopPeriodic() {
     /// IntakeShooter /*
-    if(xbox.getLeftBumper()){
-      intakeShooter.setIntakeVoltage(10);
-    }else{
-      intakeShooter.setIntakeVoltage(0);
-    }
-    if(xbox.getRightBumper()){
-      intakeShooter.setShooterVoltage(10);
-    }else{
-      intakeShooter.setShooterVoltage(0);
-    }
+    
     /// IntakeShooter */
   }
 
