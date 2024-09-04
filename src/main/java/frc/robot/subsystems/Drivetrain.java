@@ -10,12 +10,14 @@ import edu.wpi.first.wpilibj.SPI;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class Drivetrain extends SubsystemBase {
-  
+  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   public static boolean autonomous = false;
   private static Drivetrain instance = null;
   private static DifferentialDrive differentialDrive;
@@ -35,7 +37,7 @@ public class Drivetrain extends SubsystemBase {
 
   private PIDController pid;
 
-  private double targetAngle;
+  public static double targetAngle;
 
   private final double maxSpeed = 1;
 
@@ -47,11 +49,18 @@ public class Drivetrain extends SubsystemBase {
 
   private Drivetrain() {
     pid = new PIDController(p, i, d);
+    targetAngle = getAngle();
+    NetworkTableEntry nAngle = inst.getTable("Drivetrain").getEntry("Angle");
+    NetworkTableEntry nSetpoint = inst.getTable("Drivetrain").getEntry("Setpoint");
+    nAngle.setPersistent();
+    nSetpoint.setPersistent();
+
 
     left_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainLeader);
     right_motor = new WPI_TalonSRX(Constants.MotorIds.rightDrivetrainLeader);
-    left_follow_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainFollower);
-    right_follow_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainLeader);
+    left_follow_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainFollower);                                  // |
+    right_follow_motor = new WPI_TalonSRX(Constants.MotorIds.rightDrivetrainFollower);                                // v
+    // why did i do this, this is why a hole is in the wall:  right_follow_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainLeader); 
 
     left_follow_motor.follow(left_motor);
     right_follow_motor.follow(right_motor);
@@ -65,7 +74,14 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(autonomous) return;
+    double currentAngle = getAngle();
+    inst.getTable("Drivetrain").getEntry("Angle").setDouble(currentAngle);
+    inst.getTable("Drivetrain").getEntry("Setpoint").setDouble(targetAngle);
+    if(autonomous) {
+      pid.setSetpoint(targetAngle);
+      pid.calculate(currentAngle);
+      return;
+    }
     
     this.drive(Robot.xbox.getRightX(), Robot.xbox.getLeftY());
   }
@@ -80,5 +96,6 @@ public class Drivetrain extends SubsystemBase {
   
   public void resetGyro() {
     navX.reset();
+    targetAngle = getAngle();
   }
 }

@@ -11,12 +11,12 @@ public class TurnToAngle extends Command {
 
     public TurnToAngle(double angle) { 
         this.targetAngle = angle;
-        //pid.setSetpoint(angle);
+        
     }
 
     @Override
     public void initialize() { 
-
+        Drivetrain.targetAngle = angle;
     }
 
     @Override
