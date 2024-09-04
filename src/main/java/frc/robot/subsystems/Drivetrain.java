@@ -16,7 +16,7 @@ import frc.robot.RobotContainer;
 
 public class Drivetrain extends SubsystemBase {
   
-  public static boolean autonomous = true;
+  public static boolean autonomous = false;
   private static Drivetrain instance = null;
   private static DifferentialDrive differentialDrive;
   private final WPI_TalonSRX left_motor;

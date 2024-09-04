@@ -15,21 +15,25 @@ public class MoveForSeconds extends Command {
     public MoveForSeconds(double xPercent, double yPercent, double seconds) {
         this.drivetrain = Drivetrain.getInstance();
         this.xPercent = xPercent;
-        this.yPercent = yPercent;
+        this.yPercent = -yPercent;
         this.seconds = seconds;
         addRequirements(Arm.getInstance());
     }
 
     @Override
     public void initialize() {
+        timer.start();
         drivetrain.drive(xPercent, yPercent);
     }
 
     @Override
-    public void execute() { }
+    public void execute() {
+        drivetrain.drive(xPercent, yPercent);   
+    }
 
     @Override
     public void end(boolean interrupted) {
+
         timer.stop();
         timer.reset();
     }

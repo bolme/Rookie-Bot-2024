@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeShooter;
 import frc.robot.RobotContainer;
 
@@ -41,7 +42,10 @@ public class Robot extends TimedRobot implements Constants{
 
   @Override
   public void autonomousInit() {
+    Drivetrain.autonomous = true;
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
     Arm.getInstance().enable();
 
     if (m_autonomousCommand != null) {
@@ -54,6 +58,7 @@ public class Robot extends TimedRobot implements Constants{
 
   @Override
   public void teleopInit() {
+    Drivetrain.autonomous = false;
     Arm.getInstance().enable();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

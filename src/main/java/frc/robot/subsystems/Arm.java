@@ -169,12 +169,9 @@ public class Arm extends SubsystemBase {
    */
   private void updatePower(double power) {
     // check that the arm is not disabled
-    if (is_disabled || !armEncoder.isConnected()) {
-      System.err.println("Arm Encoder not connected. Disabled.");
-      //armR.setVoltage(0);
-      //armL.setVoltage(0);
+    if (is_disabled || !armEncoder.isConnected()) 
       return;
-    }
+  
 
     // Add a forward control component based on the current angle
     // This is to prevent the arm from falling under gravity
