@@ -82,14 +82,12 @@ public class RobotContainer {
      */
     //new JoystickButton(xbox, Button.kA.value).onTrue(new IntakeUntilNoteDetected());
     /// IntakeShooter */
-    new JoystickButton(xbox, Button.kA.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.speakerAngle); }));   
     new JoystickButton(xbox, Button.kX.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.intakeAngle); }));
-    new JoystickButton(xbox, Button.kY.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.stowedAngle); }));
-    new JoystickButton(xbox, Button.kB.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.ampAngle); }));
+    new JoystickButton(xbox, Button.kB.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.stowedAngle); }));
 
 
-    //new JoystickButton(xbox, Button.kA.value).onTrue(new AmpShoot());
-    //new JoystickButton(xbox, Button.kY.value).onTrue(new SpeakerShoot());
+    new JoystickButton(xbox, Button.kA.value).onTrue(new AmpShoot());
+    new JoystickButton(xbox, Button.kY.value).onTrue(new SpeakerShoot());
     IntakeUntilNoteDetected intakeCommand = new IntakeUntilNoteDetected();
     new JoystickButton(xbox, Button.kLeftBumper.value)
           .onTrue(intakeCommand)
