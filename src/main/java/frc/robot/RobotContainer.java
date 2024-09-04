@@ -40,6 +40,7 @@ public class RobotContainer {
   public static XboxController xbox = Robot.xbox;
   public static IntakeShooter intakeShooter;
   public static Drivetrain drivetrain;
+  public static Arm arm;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -47,14 +48,11 @@ public class RobotContainer {
   public RobotContainer() {
     intakeShooter = IntakeShooter.getInstance();
     drivetrain = Drivetrain.getInstance();
-    // camera = Camera.getInstance();
-    // autoChooser.addOption("Auto1", new PathPlannerAuto("Auto1"));
-    // autoChooser.addOption("Auto2", new PathPlannerAuto("Auto2"));
-    // autoChooser.addOption("Auto3", new PathPlannerAuto("Auto3"));
+    arm = Arm.getInstance();
 
-    // SmartDashboard.putData("Auto", autoChooser);
-    // Configure the trigger bindings
-
+    autoChooser.addOption("Mobility", new MobilityAuto());
+    SmartDashboard.putData("Auto", autoChooser);
+ 
     configureBindings();
   }
 
@@ -73,15 +71,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    /// IntakeShooter /* 
-    //new JoystickButton(xbox, ).onTrue(new DefaultShoot(0)).onFalse(new InstantCommand(()-> {intakeShooter.setShooterVoltage(0);}));
-    // new JoystickButton(xbox, Button.kY.value).onTrue(new AmpShoot()).onFalse(new InstantCommand(()-> {intakeShooter.setShooterVoltage(0);}));
-    // new JoystickButton(xbox, Button.kB.value).onTrue(new DefaultShoot(0)).onFalse(new InstantCommand(()-> {intakeShooter.setShooterVoltage(0);}));
-     /**
-     * TODO: Wire up the color sensor and configure it in code
-     */
-    //new JoystickButton(xbox, Button.kA.value).onTrue(new IntakeUntilNoteDetected());
-    /// IntakeShooter */
+ 
     new JoystickButton(xbox, Button.kX.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.intakeAngle); }));
     new JoystickButton(xbox, Button.kB.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.stowedAngle); }));
 
@@ -104,11 +94,9 @@ public class RobotContainer {
    * 
    */
 
-  /*public Command getAutonomousCommand() {
+  public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return autoChooser.getSelected();
   }
-
- */ 
 
 }

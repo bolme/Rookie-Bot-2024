@@ -15,6 +15,7 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class Drivetrain extends SubsystemBase {
+  public static boolean autonomous = true;
   private static Drivetrain instance = null;
   private static DifferentialDrive differentialDrive;
   private final WPI_TalonSRX left_motor;
@@ -59,7 +60,9 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    this.drive(Robot.xbox.getRightX(), Robot.xbox.getLeftY());
+    if(!autonomous) {
+      this.drive(Robot.xbox.getRightX(), Robot.xbox.getLeftY());
+    }
   }
 
   public void drive(double percent_x, double percent_y) {
