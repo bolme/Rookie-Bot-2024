@@ -29,7 +29,14 @@ public class Drivetrain extends SubsystemBase {
 
   private final AHRS navX = new AHRS(SPI.Port.kMXP);
 
-  // Final values
+  private final double P = 0.1;
+  private final double I = 0;
+  private final double D = 0.02;
+
+  private PIDController pid;
+
+  private double targetAngle;
+
   private final double maxSpeed = 1;
 
   public static Drivetrain getInstance() {
@@ -39,6 +46,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   private Drivetrain() {
+    pid = new PIDController(p, i, d);
+
     left_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainLeader);
     right_motor = new WPI_TalonSRX(Constants.MotorIds.rightDrivetrainLeader);
     left_follow_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainFollower);
@@ -67,5 +76,9 @@ public class Drivetrain extends SubsystemBase {
 
   public double getGyroAngle() {
     return navX.getAngle();
+  }
+  
+  public void resetGyro() {
+    navX.reset();
   }
 }
