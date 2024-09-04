@@ -7,7 +7,7 @@ public class SetArmToAngle extends Command {
     private final Arm arm;
     private final double targetAngle;
     private final double kDefaultError = 4.0; // degrees
-    private final double error = kDefaultError;
+    private double error = kDefaultError;
 
     public SetArmToAngle(double targetAngle) {
         this.arm = Arm.getInstance();

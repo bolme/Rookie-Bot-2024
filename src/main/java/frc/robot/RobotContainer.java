@@ -2,6 +2,7 @@
 package frc.robot;
 
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -11,6 +12,8 @@ import frc.robot.commands.DefaultShoot;
 import frc.robot.commands.IntakeUntilNoteDetected;
 import frc.robot.commands.SetArmToAngle;
 import frc.robot.commands.SpeakerShoot;
+import frc.robot.commands.autos.MobilityAuto;
+import frc.robot.commands.autos.OneNoteAuto;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeShooter;
@@ -19,6 +22,8 @@ import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
