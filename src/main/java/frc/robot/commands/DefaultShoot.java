@@ -1,10 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
-// Made DefaultShoot the B keybind on the Xbox controller so we can test it
-// This command is meant so that we can input the speeds
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.IntakeShooter;
-//// IntakeShooter
+
 public class DefaultShoot extends Command implements Constants {
 
     private final IntakeShooter intakeShooter;
@@ -26,14 +19,16 @@ public class DefaultShoot extends Command implements Constants {
         this.intakeShooter = IntakeShooter.getInstance();
         this.voltage = voltage;
         this.angle = angle;
-      // Adjust the desiredVoltage variable to the voltage value you want to use. 
-      // You can then use this instance of DefaultShoot in your robot's command scheduler or bind it to a button as needed for your specific control setup.
     }
 
-    // Called when the command is initially scheduled.
     @Override
     public void initialize() {
- 
+        /*  1. Set arm to shoot angle and power up shooters
+         *  2. Wait two seconds
+         *  3. Activate the intake to fire the note
+         *  4. Wait two seconds
+         *  5. Turn off intake and shooters.
+         */
         new SequentialCommandGroup(
             new ParallelCommandGroup(
                 new SetArmToAngle(this.angle),
@@ -64,7 +59,7 @@ public class DefaultShoot extends Command implements Constants {
     }
     @Override
     public boolean isFinished() {
-        // The command is finished when the arm is at the target angle
+        // endCommand is set to true after the the note has been shot and the motors are powering down.
         return endCommand; 
     }
 }

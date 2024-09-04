@@ -3,7 +3,7 @@ package frc.robot;
 import edu.wpi.first.math.util.Units;
 
 public interface Constants {
-  /// IntakeShooter /*
+
   public static final double intakeVoltage = 10;
   public static final double gearRatio = 6.12;
   public static final int detectThreshold = 1000;
@@ -16,7 +16,6 @@ public interface Constants {
   public static final double botRadius = Math.hypot(botLength, botLength);
   public static final double maxChassisTurnSpeed = maxSpeed/botRadius; // Max Speed divided by the circumference a circle determined by the distance of the module from the center, divided by 2 pi to convert to radians
   public double encoderRotationToMeters = 2*Math.PI*((wheelDiameter/2)/gearRatio)/42;
-  /// IntakeShooter */
 
   public static class MotorIds {
     public static final int leftDrivetrainLeader = 1;
@@ -32,7 +31,9 @@ public interface Constants {
     public static final int leftFlywheel = 8;
     public static final int rightFlywheel = 9;
   }
+
   public static final int ArmEncoderID = 0;
+  
   public static class ArmAngles {
     public static final double ampAngle = 90.0d;
     public static final double speakerAngle = 8.0d;

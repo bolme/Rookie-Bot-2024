@@ -31,10 +31,6 @@ import edu.wpi.first.wpilibj.XboxController.Button;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
- // public static XboxCotroller controller = new XboxCotroller(0);
- // public static AHRS gyro = new AHRS(Port.kMXP);
- // public static SwerveDrive swerve = new SwerveDrive();
- // private final Camera camera;
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   public static XboxController xbox = Robot.xbox;
@@ -42,9 +38,6 @@ public class RobotContainer {
   public static Drivetrain drivetrain;
   public static Arm arm;
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
   public RobotContainer() {
     intakeShooter = IntakeShooter.getInstance();
     drivetrain = Drivetrain.getInstance();
@@ -95,8 +88,6 @@ public class RobotContainer {
    */
 
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
     return autoChooser.getSelected();
   }
-
 }

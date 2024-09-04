@@ -1,13 +1,6 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -89,9 +82,7 @@ public class Arm extends SubsystemBase {
    * @return The instance of the Arm class
    */
   public static synchronized Arm getInstance() {
-    if (instance == null) {
-      instance = new Arm();
-    }
+    instance = (instance != null) ? instance : new Arm(); 
     return instance;
   }
 

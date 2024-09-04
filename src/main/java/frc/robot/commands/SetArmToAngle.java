@@ -2,45 +2,43 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Arm;
-//// Arm
+
 public class SetArmToAngle extends Command {
     private final Arm arm;
     private final double targetAngle;
-    private final double kDefaultError = 4.0; // in degrees
+    private final double kDefaultError = 4.0; // degrees
+    private final double error = kDefaultError;
 
-    /**
-     * Creates a new SetArmToAngle command.
-     *
-     * @param targetAngle The target angle for the arm.
-     * @param error The error for the arm.
-     */
     public SetArmToAngle(double targetAngle) {
         this.arm = Arm.getInstance();
         this.targetAngle = targetAngle;
+        this.error = kDefaultError;
+        addRequirements(arm);
+    }
+
+    public SetArmToAngle(double targetAngle, double angleError) {
+        this.arm = Arm.getInstance();
+        this.targetAngle = targetAngle;
+        this.error = angleError;
         addRequirements(arm);
     }
 
     @Override
     public void initialize() {
-        // Set the target angle when the command is initialized
         arm.setAngle(targetAngle);
     }
 
     @Override
-    public void execute() {
-        // Nothing to do here, the arm's PIDController will handle moving the arm to the target angle
-    }
+    public void execute() { /* PID Controller handles arm movement*/ }
 
     @Override
-    public void end(boolean interrupted) {
-        System.out.println("Internal Finish");
-        // Do nothing because the arm's PIDController will keep the arm at the target angle
-    }
+    public void end(boolean interrupted) { }
 
     @Override
     public boolean isFinished() {
-        // The command is finished when the arm is at the target angle
-        System.out.println(Math.abs(arm.getAngle() - targetAngle));
-        return Math.abs(arm.getAngle() - targetAngle) < kDefaultError; 
+        // finishes when the variations between the target and current angle is below the set error;
+        double currentError = Math.abs(arm.getAngle() - targetAngle);
+        System.out.println(currentError);
+        return currentError < error; 
     }
 }

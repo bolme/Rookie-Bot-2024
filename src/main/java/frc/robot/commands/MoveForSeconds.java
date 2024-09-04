@@ -12,6 +12,7 @@ public class MoveForSeconds extends Command {
         this.drivetrain = Drivetrain.getInstance();
         this.xPercent = xPercent;
         this.yPercent = yPercent;
+        
         addRequirements(arm);
     }
 
