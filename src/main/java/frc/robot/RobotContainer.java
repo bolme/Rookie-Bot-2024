@@ -35,7 +35,7 @@ public class RobotContainer {
  // public static AHRS gyro = new AHRS(Port.kMXP);
  // public static SwerveDrive swerve = new SwerveDrive();
  // private final Camera camera;
- // SendableChooser<Command> autoChooser = new SendableChooser<>();
+  SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   public static XboxController xbox = Robot.xbox;
   public static IntakeShooter intakeShooter;
