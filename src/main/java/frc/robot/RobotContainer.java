@@ -77,6 +77,18 @@ public class RobotContainer {
           .onFalse(new InstantCommand(()->{ 
               intakeCommand.cancel();
             }));
+
+
+    /** 
+     * BINDINGS
+     * Left joystick - fowards and backwards
+     * Right joystick - turn left and right 
+     * A - Shoot note into the Amp
+     * B - Set Arm to stowed angle
+     * Y - Shoot note into the speaker
+     * X - Set arm to intake angle
+     * Left Bumper (Hold) - intake note
+     */
   } 
 
 
