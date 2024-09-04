@@ -4,9 +4,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import frc.robot.subsystems.SwerveDrive;
 
-public class MobilityAuto extends SequentialCommandGroup{
+public class OneNoteAuto extends SequentialCommandGroup{
     // TODO: needs to be properly configured to go the correct distance (currently guesses)
-    public MobilityAuto(){
-        super(new MoveForSeconds(0, 0.5, 2));
+    public OneNoteAuto(){
+        super(new SpeakerShoot(), new MoveForSeconds(0.1, 0.5, 1), new MoveForSeconds(0, 0.5, 2));
     }
+    
 }

@@ -44,6 +44,7 @@ public class RobotContainer {
     arm = Arm.getInstance();
 
     autoChooser.addOption("Mobility", new MobilityAuto());
+    autoChooser.addOption("OneNoteAuto", new OneNoteAuto());
     SmartDashboard.putData("Auto", autoChooser);
  
     configureBindings();
