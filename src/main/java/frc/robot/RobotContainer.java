@@ -11,6 +11,7 @@ import frc.robot.commands.DefaultShoot;
 import frc.robot.commands.IntakeUntilNoteDetected;
 import frc.robot.commands.SetArmToAngle;
 import frc.robot.commands.SpeakerShoot;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeShooter;
 
@@ -81,14 +82,20 @@ public class RobotContainer {
      */
     //new JoystickButton(xbox, Button.kA.value).onTrue(new IntakeUntilNoteDetected());
     /// IntakeShooter */
+    new JoystickButton(xbox, Button.kA.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.speakerAngle); }));   
+    new JoystickButton(xbox, Button.kX.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.intakeAngle); }));
+    new JoystickButton(xbox, Button.kY.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.stowedAngle); }));
+    new JoystickButton(xbox, Button.kB.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.ampAngle); }));
 
-    new JoystickButton(xbox, Button.kB.value).onTrue(new SetArmToAngle(174));
-    
-    new JoystickButton(xbox, Button.kRightBumper.value).onTrue(new DefaultShoot(10, 163));
-    new JoystickButton(xbox, Button.kLeftBumper.value).onTrue(new IntakeUntilNoteDetected());
-    
-    new JoystickButton(xbox, Button.kY.value).onTrue(new SetArmToAngle(125));
-    new JoystickButton(xbox, Button.kX.value).onTrue(new SetArmToAngle(75));
+
+    //new JoystickButton(xbox, Button.kA.value).onTrue(new AmpShoot());
+    //new JoystickButton(xbox, Button.kY.value).onTrue(new SpeakerShoot());
+    IntakeUntilNoteDetected intakeCommand = new IntakeUntilNoteDetected();
+    new JoystickButton(xbox, Button.kLeftBumper.value)
+          .onTrue(intakeCommand)
+          .onFalse(new InstantCommand(()->{ 
+              intakeCommand.cancel();
+            }));
   } 
 
 

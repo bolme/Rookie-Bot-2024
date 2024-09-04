@@ -7,21 +7,25 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.IntakeShooter;
 //// IntakeShooter
 public class AmpShoot extends Command implements Constants{
+    public AmpShoot() { }
 
-    public IntakeShooter intakeShooter; 
+    @Override
+    public void initialize() { }
 
-    public AmpShoot() {
-        intakeShooter = IntakeShooter.getInstance();
+    @Override
+    public boolean isFinished() {
+        return true;
     }
     
-    // Called when the command is initially scheduled.
     @Override
-    public void initialize() {
-        intakeShooter.setShooterVoltage(3);
+    public void end(boolean interrupted) {
+        new DefaultShoot(10, Constants.ArmAngles.ampAngle).schedule();
     }
 
 }

@@ -48,23 +48,23 @@ public class Arm extends SubsystemBase {
 
   // Constants for the arm motor configuration
   private static final int kMotorCurrentLimit = 40; // The current limit for the arm motors
-  private static final boolean kArmRightReversed = false; // Motor direction for right arm
-  private static final boolean kArmLeftReversed = true; // Motor direction for left arm
+  private static final boolean kArmRightReversed = true; // Motor direction for right arm
+  private static final boolean kArmLeftReversed = false; // Motor direction for left arm
   private static final IdleMode kEnabledMotorMode = IdleMode.kBrake; // Motor mode when enabled
   private static final IdleMode kDisabledMotorMode = IdleMode.kCoast; // Motor mode when disabled
 
   // Constants for the PID controller
-  private static final double kDefaultP = .175; // Proportional gain
+  private static final double kDefaultP = .5; // Proportional gain 
   private static final double kDefaultI = 0; // Integral gain
-  private static final double kDefaultD = 0.003; // Derivative gain
+  private static final double kDefaultD = 0.1; // Derivative gain
 
   // Constants for the arm setpoint
   private static final double kDefaultSetpoint = 0.0; // The starting set point for the arm
-  private static final double kMaxSetpoint = 178.0; // Maximum setpoint; Test again with Amp 
-  private static final double kMinSetpoint = 8.0; // Minimum setpoint
+  private static final double kMaxSetpoint = 110; // Maximum setpoint; Test again with Amp 
+  private static final double kMinSetpoint = 0; // Minimum setpoint
 
   // Constants for the arm control
-  private static final double kDefaultForwardParam = .325; // The default forward control parameter
+  private static final double kDefaultForwardParam = 2; // The default forward control parameter
   private static final double kArmEncoderOffset = 150 + 180; // The offset of the arm encoder from the zero position                                                       // degrees
 
   // Create a NetworkTable instance to enable the use of NetworkTables
@@ -196,20 +196,19 @@ public class Arm extends SubsystemBase {
     double setpoint = inst.getTable(kNTArm).getEntry(kNTSetpoint).getDouble(kDefaultSetpoint);
 
     // The forward controll needed is proportional to the cosine of the angle
-    double forward_power = inst.getTable(kNTArm).getEntry(kNTForwardParam).getDouble(kDefaultForwardParam)
+    double forward_power =  inst.getTable(kNTArm).getEntry(kNTForwardParam).getDouble(kDefaultForwardParam)
         * Math.cos(Math.toRadians(angle));
 
     pid.setSetpoint(setpoint);
     double pid_power = pid.calculate(angle);
-    
     double voltage = pid_power + forward_power;
     // Update the network table with the forward and PID power
     inst.getTable(kNTArm).getEntry(kForwardPower).setDouble(forward_power);
     inst.getTable(kNTArm).getEntry(kNTPidPower).setDouble(pid_power);
     inst.getTable(kNTArm).getEntry(kNTMotorSpeed).setDouble(voltage);
 
-    //armR.setVoltage(voltage);
-    //armL.setVoltage(voltage);
+    armR.setVoltage(voltage);
+    armL.setVoltage(voltage);
   }
 
   /**

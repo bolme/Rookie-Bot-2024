@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.IntakeShooter;
 //// IntakeShooter
     /**
@@ -24,6 +25,7 @@ public class IntakeUntilNoteDetected extends Command {
   @Override
   public void initialize() {
     startTime = System.currentTimeMillis();
+    Arm.getInstance().setAngle(Constants.ArmAngles.intakeAngle);
     intakeShooter.setIntakeVoltage(intakeVoltage);
   }
   public void execute(){
@@ -48,7 +50,7 @@ public class IntakeUntilNoteDetected extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return IntakeShooter.proximityThresholdExeeded;
+    return IntakeShooter.pieceDetected;
     // return false;
   }
 

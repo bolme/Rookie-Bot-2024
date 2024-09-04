@@ -33,5 +33,12 @@ public interface Constants {
     public static final int rightFlywheel = 9;
   }
   public static final int ArmEncoderID = 0;
+  public static class ArmAngles {
+    public static final double ampAngle = 90.0d;
+    public static final double speakerAngle = 8.0d;
+    public static final double intakeAngle = 0.0d;
+    public static final double stowedAngle = 68.0d;
+  }
+
 
 }

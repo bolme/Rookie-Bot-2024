@@ -54,7 +54,7 @@ public class Drivetrain extends SubsystemBase {
     this.deadzone = deadzone; 
 
     left_motor.setInverted(true);
-    left_follow_motor.setInverted(true);
+    left_follow_motor.setInverted(false);
   }
 
   @Override

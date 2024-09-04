@@ -11,6 +11,7 @@ import com.revrobotics.RelativeEncoder;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 // Color sensor related
 import edu.wpi.first.wpilibj.I2C;
@@ -46,18 +47,18 @@ public class IntakeShooter extends SubsystemBase {
     /**
      * The I2C port the proximity sensor is connected to.
      */
-    private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
     /** 
      * This object is constructed with an I2C port as a parameter.
      * This device will be automatically initialized with default parameters.
      */
-    private final ColorSensorV3 proximitySensor = new ColorSensorV3(i2cPort);
+    private final DigitalInput proximitySensor = new DigitalInput(1);
 
     /**
      * True if a piece is in the intake.
      */
     public static boolean holdingPiece = false;
+    public static boolean pieceDetected = false;
 
     /**
      * Returns the instance.
@@ -71,11 +72,6 @@ public class IntakeShooter extends SubsystemBase {
 
     // Sets the motor to neutral on creation of the class.
     public IntakeShooter() {
-        matcher.addColorMatch(Color.kBlack);
-        matcher.addColorMatch(Color.kWhite);
-        matcher.addColorMatch(Color.kBlue);
-        matcher.addColorMatch(Color.kGreen);
-        matcher.addColorMatch(Color.kOrange);
     }
 
     /** 
@@ -111,11 +107,10 @@ public class IntakeShooter extends SubsystemBase {
     public void periodic() {
         
         // The method getProximity() returns a value 0 - 2047, with the closest being .
-        int detectedProximity = proximitySensor.getProximity();
-        proximityThresholdExeeded = matcher.matchClosestColor(proximitySensor.getColor()).color == Color.kOrange;
+        pieceDetected = !proximitySensor.get();
+
         //Open Smart Dashboard to see the color detected by the sensor.
-        SmartDashboard.putNumber("Proximity", detectedProximity);
-        SmartDashboard.putBoolean("NoteDetected", proximityThresholdExeeded);
+        SmartDashboard.putBoolean("NoteDetected", pieceDetected);
     }
 //fuck you grace - joseph
 }

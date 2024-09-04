@@ -2,36 +2,30 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-// Made SpeakerShoot the X keybind on the xbox controller so we can test it
+// Made AmpShoot the Y keybind on the xbox controller so we can test it
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.IntakeShooter;
 //// IntakeShooter
-public class SpeakerShoot extends Command implements Constants {
+public class SpeakerShoot extends Command implements Constants{
+    public SpeakerShoot() { }
 
-    public IntakeShooter intakeShooter; 
-    private InterpolatingDoubleTreeMap voltageInterpolator;
-
-    public SpeakerShoot() {
-        intakeShooter = IntakeShooter.getInstance();
-        voltageInterpolator = new InterpolatingDoubleTreeMap(/* Add your inverseInterpolator, interpolator, and comparator here */);
-    }
-
-    // Called when the command is initially scheduled.
     @Override
-    public void initialize() {
-        // Use the InterpolatingTreeMap to get the interpolated voltage for the key (e.g., joystick position)
-        // PLEASE IGNORE the joystick part, this will be connected to the camera but its not ready yet
-        double joystickPosition = 0; /* Get your joystick position here */;
-        double interpolatedVoltage = voltageInterpolator.get(joystickPosition);
-        
-        // Set the shooter voltage based on the interpolated value
-        intakeShooter.setShooterVoltage(interpolatedVoltage);
+    public void initialize() { }
+
+    @Override
+    public boolean isFinished() {
+        return true;
+    }
+    
+    @Override
+    public void end(boolean interrupted) {
+        new DefaultShoot(10, Constants.ArmAngles.speakerAngle).schedule();
     }
 
-    // Other methods for isFinished(), end(), etc., can be added if needed.
 }
