@@ -6,7 +6,7 @@ import frc.robot.commands.SpeakerShoot;
 public class OneNoteAuto extends SequentialCommandGroup{
     // TODO: needs to be properly configured to go the correct distance (currently guesses)
     public OneNoteAuto(){
-        super(new SpeakerShoot(), new MoveForSeconds(0.1, 0.5, 1), new MoveForSeconds(0, 0.5, 2));
+        super(new SpeakerShoot(), new TurnDegrees(45), new MoveForSeconds(0, 0.5, 2));
     }
     
 }

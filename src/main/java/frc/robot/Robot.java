@@ -43,7 +43,7 @@ public class Robot extends TimedRobot implements Constants{
   @Override
   public void autonomousInit() {
     Drivetrain.autonomous = true;
-
+    Drivetrain.targetAngle = Drivetrain.getAngle();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     Arm.getInstance().enable();

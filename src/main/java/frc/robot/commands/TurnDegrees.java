@@ -6,23 +6,23 @@ import frc.robot.subsystems.Drivetrain;
 
 import frc.robot.Constants;
 
-public class TurnToAngle extends Command {
+public class TurnDegrees extends Command {
     private final double errorLimitDefault = 3;
     private double errorLimit;
 
 
-    public TurnToAngle(double angle) { 
+    public TurnDegrees(double angle) { 
         this.targetAngle = angle;
         errorLimit = errorLimitDefault;
     }
-    public TurnToAngle(double angle, double errorLimity) { 
+    public TurnDegrees(double angle, double errorLimity) { 
         this.targetAngle = angle;
         this.errorLimit = errorLimit;
     }
 
     @Override
     public void initialize() { 
-        Drivetrain.targetAngle = angle;
+        Drivetrain.targetAngle = angle + Drivetrain.getAngle();
     }
 
     @Override

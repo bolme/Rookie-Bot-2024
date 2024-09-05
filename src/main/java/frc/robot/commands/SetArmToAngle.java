@@ -38,7 +38,6 @@ public class SetArmToAngle extends Command {
     public boolean isFinished() {
         // finishes when the variations between the target and current angle is below the set error;
         double currentError = Math.abs(arm.getAngle() - targetAngle);
-        System.out.println(currentError);
         return currentError < error; 
     }
 }

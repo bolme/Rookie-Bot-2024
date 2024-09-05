@@ -8,6 +8,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -36,6 +37,9 @@ public class Drivetrain extends SubsystemBase {
   private final double D = 0.02;
 
   private PIDController pid;
+  private double pidOutput;
+
+  public static double pidError = 0;
 
   public static double targetAngle;
 
@@ -79,15 +83,18 @@ public class Drivetrain extends SubsystemBase {
     inst.getTable("Drivetrain").getEntry("Setpoint").setDouble(targetAngle);
     if(autonomous) {
       pid.setSetpoint(targetAngle);
-      pid.calculate(currentAngle);
+      pidOutput = pid.calculate(currentAngle);
+      pidError = Math.abs(currentAngle - targetAngle);
       return;
+    } else {
+      pidOutput = 0;
     }
     
     this.drive(Robot.xbox.getRightX(), Robot.xbox.getLeftY());
   }
 
   public void drive(double percent_x, double percent_y) {
-    differentialDrive.arcadeDrive(percent_x, percent_y);
+    differentialDrive.arcadeDrive(percent_x + pidOutput, percent_y);
   }
 
   public double getGyroAngle() {
