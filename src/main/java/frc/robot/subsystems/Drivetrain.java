@@ -52,7 +52,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   private Drivetrain() {
-    pid = new PIDController(p, i, d);
+    pid = new PIDController(P, I, D);
     targetAngle = getAngle();
     NetworkTableEntry nAngle = inst.getTable("Drivetrain").getEntry("Angle");
     NetworkTableEntry nSetpoint = inst.getTable("Drivetrain").getEntry("Setpoint");
@@ -97,12 +97,12 @@ public class Drivetrain extends SubsystemBase {
     differentialDrive.arcadeDrive(percent_x + pidOutput, percent_y);
   }
 
-  public double getGyroAngle() {
-    return navX.getAngle();
+  public static double getAngle() {
+    return Drivetrain.getInstance().navX.getAngle();
   }
   
-  public void resetGyro() {
-    navX.reset();
+  public static void resetGyro() {
+    Drivetrain.getInstance().navX.reset();
     targetAngle = getAngle();
   }
 }

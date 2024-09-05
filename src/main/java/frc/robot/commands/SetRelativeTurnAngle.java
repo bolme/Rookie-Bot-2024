@@ -14,10 +14,10 @@ public class SetRelativeTurnAngle extends Command {
 
     @Override
     public void initialize() { 
-        Drivetrain.targetAngle = angle + Drivetrain.getAngle();
+        Drivetrain.targetAngle = targetAngle + Drivetrain.getAngle();
     }
 
-    @Overridea
+    @Override
     public void execute() { }
 
     @Override
