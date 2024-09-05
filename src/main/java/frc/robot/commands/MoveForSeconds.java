@@ -33,7 +33,6 @@ public class MoveForSeconds extends Command {
 
     @Override
     public void end(boolean interrupted) {
-
         timer.stop();
         timer.reset();
     }

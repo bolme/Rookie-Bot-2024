@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -68,6 +70,11 @@ public class Drivetrain extends SubsystemBase {
 
     left_follow_motor.follow(left_motor);
     right_follow_motor.follow(right_motor);
+
+    left_motor.setNeutralMode(NeutralMode.Brake);
+    right_motor.setNeutralMode(NeutralMode.Brake);
+    left_follow_motor.setNeutralMode(NeutralMode.Brake);
+    right_follow_motor.setNeutralMode(NeutralMode.Brake);
 
 
     differentialDrive = new DifferentialDrive(left_motor, right_motor);

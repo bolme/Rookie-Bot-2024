@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -94,7 +95,8 @@ public class Arm extends SubsystemBase {
     armL = new WPI_TalonSRX(Constants.MotorIds.leftArm);
     armR.setInverted(kArmRightReversed);
     armL.setInverted(kArmLeftReversed);
-
+    armR.setNeutralMode(NeutralMode.Brake);
+    armL.setNeutralMode(NeutralMode.Brake);
     // Create entries for P, I, and D values
     NetworkTableEntry pEntry = inst.getTable(kNTArm).getEntry(kNTP);
     NetworkTableEntry iEntry = inst.getTable(kNTArm).getEntry(kNTI);
