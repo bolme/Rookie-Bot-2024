@@ -34,9 +34,9 @@ public class Drivetrain extends SubsystemBase {
 
   private final AHRS navX = new AHRS(SPI.Port.kMXP);
 
-  private final double P = 0.1;
+  private final double P = 0.05;
   private final double I = 0;
-  private final double D = 0.02;
+  private final double D = 0.01;
 
   private PIDController pid;
   private double pidOutput;
