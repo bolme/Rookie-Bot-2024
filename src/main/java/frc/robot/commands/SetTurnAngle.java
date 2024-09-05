@@ -14,10 +14,10 @@ public class SetTurnAngle extends Command {
 
     @Override
     public void initialize() { 
-        Drivetrain.targetAngle = angle;
+        Drivetrain.targetAngle = targetAngle;
     }
 
-    @Overridea
+    @Override
     public void execute() { }
 
     @Override
