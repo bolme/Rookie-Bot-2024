@@ -15,6 +15,7 @@ public class Robot extends TimedRobot implements Constants{
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
   private IntakeShooter intakeShooter = IntakeShooter.getInstance();
+  private Drivetrain drivetrain = Drivetrain.getInstance();
   public static XboxController xbox = new XboxController(0);
 
   
@@ -43,7 +44,7 @@ public class Robot extends TimedRobot implements Constants{
   @Override
   public void autonomousInit() {
     Drivetrain.autonomous = true;
-    Drivetrain.targetAngle = Drivetrain.getAngle();
+    Drivetrain.targetAngle = drivetrain.getAngle();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     Arm.getInstance().enable();

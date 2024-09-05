@@ -24,7 +24,7 @@ public class TurnDegrees extends Command {
 
     @Override
     public void initialize() { 
-        Drivetrain.targetAngle = targetAngle + Drivetrain.getAngle();
+        Drivetrain.targetAngle = targetAngle + drivetrain.getAngle();
     }
 
     @Override

@@ -97,12 +97,12 @@ public class Drivetrain extends SubsystemBase {
     differentialDrive.arcadeDrive(percent_x + pidOutput, percent_y);
   }
 
-  public static double getAngle() {
-    return Drivetrain.getInstance().navX.getAngle();
+  public double getAngle() {
+    return navX.getAngle();
   }
   
-  public static void resetGyro() {
-    Drivetrain.getInstance().navX.reset();
+  public void resetGyro() {
+    navX.reset();
     targetAngle = getAngle();
   }
 }

@@ -7,14 +7,16 @@ import frc.robot.Constants;
 public class SetRelativeTurnAngle extends Command {
 
     private double targetAngle;
+    private Drivetrain drivetrain;
 
     public SetRelativeTurnAngle(double angle) { 
         this.targetAngle = angle;
+        drivetrain = Drivetrain.getInstance();
     }
 
     @Override
     public void initialize() { 
-        Drivetrain.targetAngle = targetAngle + Drivetrain.getAngle();
+        Drivetrain.targetAngle = targetAngle + drivetrain.getAngle();
     }
 
     @Override
