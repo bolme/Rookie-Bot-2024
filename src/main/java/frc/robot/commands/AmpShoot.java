@@ -18,7 +18,7 @@ public class AmpShoot extends Command implements Constants{
     
     @Override
     public void end(boolean interrupted) {
-        new DefaultShoot(10, Constants.ArmAngles.ampAngle).schedule();
+        new DefaultShoot(6.5, Constants.ArmAngles.ampAngle).schedule();
     }
 
 }

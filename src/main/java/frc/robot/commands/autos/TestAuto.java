@@ -14,7 +14,7 @@ public class TestAuto extends SequentialCommandGroup{
         super(
             new TurnDegrees(45),
             new WaitCommand(1),
-            new TurnToAngle(300)
+            new TurnToAngle(-120)
         );
     }
 }

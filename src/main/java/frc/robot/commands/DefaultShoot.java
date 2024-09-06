@@ -42,14 +42,15 @@ public class DefaultShoot extends Command implements Constants {
             new InstantCommand(()->{
                 intakeShooter.setIntakeVoltage(10.0);
             }),
-            new WaitCommand(2.0d),
+            new WaitCommand(1.0d),
             new ParallelCommandGroup(
                 new InstantCommand(()->{ 
                     intakeShooter.setShooterVoltage(0); 
                 }),
                 new InstantCommand(()->{ 
                     intakeShooter.setIntakeVoltage(0); 
-                })
+                }),
+                new SetArmToAngle(Constants.ArmAngles.safeAngle)
             ),
             new InstantCommand(()->{
                 endCommand = true;

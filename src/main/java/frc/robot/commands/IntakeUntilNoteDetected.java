@@ -37,6 +37,7 @@ public class IntakeUntilNoteDetected extends Command {
   public void end(boolean interrupted) {
     IntakeShooter.holdingPiece = !interrupted;
     intakeShooter.setIntakeVoltage(0);
+    new SetArmToAngle(Constants.ArmAngles.safeAngle).schedule();
   }
 
   @Override

@@ -4,6 +4,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -75,7 +77,9 @@ public class RobotContainer {
   private void configureBindings() {
  
     new JoystickButton(xbox, Button.kX.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.intakeAngle); }));
-    new JoystickButton(xbox, Button.kB.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.stowedAngle); }));
+    new JoystickButton(xbox, Button.kB.value)
+      .onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.safeAngle); }))
+      .whileTrue(new SequentialCommandGroup(new WaitCommand(1), new SetArmToAngle(Constants.ArmAngles.stowedAngle)));
 
 
     new JoystickButton(xbox, Button.kA.value).onTrue(new AmpShoot());

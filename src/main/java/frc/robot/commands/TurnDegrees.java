@@ -7,7 +7,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.Constants;
 
 public class TurnDegrees extends Command {
-    private final double errorLimitDefault = 3;
+    private final double errorLimitDefault = 2;
     private double errorLimit;
     private double targetAngle;
     private Drivetrain drivetrain;

@@ -12,7 +12,7 @@ public class SpeakerShoot extends Command implements Constants{
 
     @Override
     public boolean isFinished() {
-        return true;
+        return true; 
     }
     
     @Override

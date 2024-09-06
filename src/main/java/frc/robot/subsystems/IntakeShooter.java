@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -11,7 +13,7 @@ import frc.robot.Constants;
 public class IntakeShooter extends SubsystemBase {
 
     public static IntakeShooter instance = null;
-
+    
     public WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.MotorIds.intake);
     public WPI_TalonSRX shooterA = new WPI_TalonSRX(Constants.MotorIds.leftFlywheel);
     public WPI_TalonSRX shooterB = new WPI_TalonSRX(Constants.MotorIds.rightFlywheel);
