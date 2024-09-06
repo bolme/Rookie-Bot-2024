@@ -82,8 +82,8 @@ public class RobotContainer {
       .whileTrue(new SequentialCommandGroup(new WaitCommand(1), new SetArmToAngle(Constants.ArmAngles.stowedAngle)));
 
 
-    new JoystickButton(xbox, Button.kA.value).onTrue(new AmpShoot());
-    new JoystickButton(xbox, Button.kY.value).onTrue(new SpeakerShoot());
+    new JoystickButton(xbox, Button.kY.value).onTrue(new AmpShoot());
+    new JoystickButton(xbox, Button.kA.value).onTrue(new SpeakerShoot());
     IntakeUntilNoteDetected intakeCommand = new IntakeUntilNoteDetected();
     new JoystickButton(xbox, Button.kLeftBumper.value)
           .onTrue(intakeCommand)
@@ -97,9 +97,9 @@ public class RobotContainer {
      * BINDINGS
      * Left joystick - fowards and backwards
      * Right joystick - turn left and right 
-     * A - Shoot note into the Amp
+     * A - Shoot note into the speaker
      * B - Set Arm to stowed angle
-     * Y - Shoot note into the speaker
+     * Y - Shoot note into the amp
      * X - Set arm to intake angle
      * Left Bumper (Hold) - intake note
      * Start Button - reset gyro
