@@ -83,6 +83,7 @@ public class RobotContainer {
           .onFalse(new InstantCommand(()->{ 
               intakeCommand.cancel();
             }));
+    new JoystickButton(xbox, Button.kStart.value).onTrue(new InstantCommand(()->{ drivetrain.resetGyro(); }));
 
 
     /** 
@@ -94,6 +95,7 @@ public class RobotContainer {
      * Y - Shoot note into the speaker
      * X - Set arm to intake angle
      * Left Bumper (Hold) - intake note
+     * Start Button - reset gyro
      */
   } 
 
