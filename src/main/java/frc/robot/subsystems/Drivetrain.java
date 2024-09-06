@@ -34,7 +34,7 @@ public class Drivetrain extends SubsystemBase {
 
   private final AHRS navX = new AHRS(SPI.Port.kMXP);
 
-  private final double P = 0.05;
+  private final double P = 0.1;
   private final double I = 0;
   private final double D = 0.01;
 
@@ -90,8 +90,9 @@ public class Drivetrain extends SubsystemBase {
     inst.getTable("Drivetrain").getEntry("Setpoint").setDouble(targetAngle);
     if(autonomous) {
       pid.setSetpoint(targetAngle);
-      pidOutput = pid.calculate(currentAngle);
       pidError = Math.abs(currentAngle - targetAngle);
+      pidOutput = pid.calculate(currentAngle);// * (pidError > 180 ? 0 : -1);
+      
       return;
     } else {
       pidOutput = 0;
@@ -105,6 +106,9 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getAngle() {
+    return navX.getAngle() % 360;
+  }
+  public double getAbsoluteAngle() {
     return navX.getAngle();
   }
   

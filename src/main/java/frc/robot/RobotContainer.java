@@ -14,6 +14,7 @@ import frc.robot.commands.SetArmToAngle;
 import frc.robot.commands.SpeakerShoot;
 import frc.robot.commands.autos.MobilityAuto;
 import frc.robot.commands.autos.OneNoteAuto;
+import frc.robot.commands.autos.TestAuto;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeShooter;
@@ -49,7 +50,9 @@ public class RobotContainer {
     arm = Arm.getInstance();
 
     autoChooser.addOption("Mobility", new MobilityAuto());
-    autoChooser.addOption("OneNoteAuto", new OneNoteAuto());
+    autoChooser.addOption("OneNote", new OneNoteAuto());
+    autoChooser.addOption("Test", new TestAuto());
+
     SmartDashboard.putData("Auto", autoChooser);
  
     configureBindings();
