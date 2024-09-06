@@ -15,6 +15,7 @@ import frc.robot.commands.IntakeUntilNoteDetected;
 import frc.robot.commands.SetArmToAngle;
 import frc.robot.commands.SpeakerShoot;
 import frc.robot.commands.autos.MobilityAuto;
+import frc.robot.commands.autos.OneNoteAndMobility;
 import frc.robot.commands.autos.OneNoteAuto;
 import frc.robot.commands.autos.TestAuto;
 import frc.robot.subsystems.Arm;
@@ -53,6 +54,7 @@ public class RobotContainer {
 
     autoChooser.addOption("Mobility", new MobilityAuto());
     autoChooser.addOption("OneNote", new OneNoteAuto());
+    autoChooser.addOption("Middle Speaker and Mobily", new OneNoteAndMobility());
     autoChooser.addOption("Test", new TestAuto());
 
     SmartDashboard.putData("Auto", autoChooser);
@@ -82,8 +84,8 @@ public class RobotContainer {
       .whileTrue(new SequentialCommandGroup(new WaitCommand(1), new SetArmToAngle(Constants.ArmAngles.stowedAngle)));
 
 
-    new JoystickButton(xbox, Button.kY.value).onTrue(new AmpShoot());
-    new JoystickButton(xbox, Button.kA.value).onTrue(new SpeakerShoot());
+    new JoystickButton(xbox, Button.kY.value).whileTrue(new AmpShoot());
+    new JoystickButton(xbox, Button.kA.value).whileTrue(new SpeakerShoot());
     IntakeUntilNoteDetected intakeCommand = new IntakeUntilNoteDetected();
     new JoystickButton(xbox, Button.kLeftBumper.value)
           .onTrue(intakeCommand)
@@ -97,10 +99,11 @@ public class RobotContainer {
      * BINDINGS
      * Left joystick - fowards and backwards
      * Right joystick - turn left and right 
-     * A - Shoot note into the speaker
-     * B - Set Arm to stowed angle
+     * A (hold) - Shoot note into the speaker
+     * B - Set arm to safe angle
+     * B (hold)- Set Arm to stowed angle
      * Y - Shoot note into the amp
-     * X - Set arm to intake angle
+     * X (hold) - Set arm to intake angle
      * Left Bumper (Hold) - intake note
      * Start Button - reset gyro
      */

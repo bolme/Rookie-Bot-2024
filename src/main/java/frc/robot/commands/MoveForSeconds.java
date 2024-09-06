@@ -17,7 +17,6 @@ public class MoveForSeconds extends Command {
         this.xPercent = xPercent;
         this.yPercent = -yPercent;
         this.seconds = seconds;
-        addRequirements(Arm.getInstance());
     }
 
     @Override
