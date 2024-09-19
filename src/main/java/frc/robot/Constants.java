@@ -23,6 +23,9 @@ public interface Constants {
     public static final int rightDrivetrainLeader = 4;
     public static final int rightDrivetrainFollower = 3;
 
+    public static final int leftDrivetrainEncoderCanId = 1;
+    public static final int rightDrivetrainEncoderCanId = 3;
+
     public static final int leftArm = 6;
     public static final int rightArm = 5;
 
@@ -40,6 +43,7 @@ public interface Constants {
     public static final double safeAngle = 16d;
     public static final double intakeAngle = -2.0d;
     public static final double stowedAngle = 68.0d;
+    public static final double lobAngle = 45;
   }
 
 

@@ -68,6 +68,7 @@ public class Drivetrain extends SubsystemBase {
     right_follow_motor = new WPI_TalonSRX(Constants.MotorIds.rightDrivetrainFollower);                                // v
     // why did i do this, this is why a hole is in the wall:  right_follow_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainLeader); 
 
+    
     left_follow_motor.follow(left_motor);
     right_follow_motor.follow(right_motor);
 
@@ -85,6 +86,8 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
+        System.out.println(left_motor.getSelectedSensorPosition()  + ", " + right_follow_motor.getSelectedSensorPosition());
+
     double currentAngle = getAngle();
     inst.getTable("Drivetrain").getEntry("Angle").setDouble(currentAngle);
     inst.getTable("Drivetrain").getEntry("Setpoint").setDouble(targetAngle);
@@ -107,7 +110,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getAngle() {
-    return navX.getAngle() % 360 - 180;
+    return navX.getAngle() % 180;
   }
   public double getAbsoluteAngle() {
     return navX.getAngle();

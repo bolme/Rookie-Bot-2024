@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AmpShoot;
 import frc.robot.commands.DefaultShoot;
 import frc.robot.commands.IntakeUntilNoteDetected;
+import frc.robot.commands.LobShoot;
 import frc.robot.commands.SetArmToAngle;
 import frc.robot.commands.SpeakerShoot;
 import frc.robot.commands.autos.MobilityAuto;
@@ -21,6 +22,8 @@ import frc.robot.commands.autos.TestAuto;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeShooter;
+
+import javax.xml.namespace.QName;
 
 import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
@@ -78,12 +81,11 @@ public class RobotContainer {
    */
   private void configureBindings() {
  
-    new JoystickButton(xbox, Button.kX.value).onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.intakeAngle); }));
     new JoystickButton(xbox, Button.kB.value)
       .onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.safeAngle); }))
       .whileTrue(new SequentialCommandGroup(new WaitCommand(1), new SetArmToAngle(Constants.ArmAngles.stowedAngle)));
-
-
+    
+      new JoystickButton(xbox, Button.kX.value).onTrue(new LobShoot());
     new JoystickButton(xbox, Button.kY.value).whileTrue(new AmpShoot());
     new JoystickButton(xbox, Button.kA.value).whileTrue(new SpeakerShoot());
     IntakeUntilNoteDetected intakeCommand = new IntakeUntilNoteDetected();
