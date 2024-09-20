@@ -38,6 +38,9 @@ public class Drivetrain extends SubsystemBase {
   private final double I = 0.075;
   private final double D = 0.01;
 
+  private double initialLeftRot = 0;
+  private double initialRightRot = 0;
+
   private PIDController pid;
   private double pidOutput;
 
@@ -57,9 +60,18 @@ public class Drivetrain extends SubsystemBase {
     pid = new PIDController(P, I, D);
     targetAngle = getAngle();
     NetworkTableEntry nAngle = inst.getTable("Drivetrain").getEntry("Angle");
-    NetworkTableEntry nSetpoint = inst.getTable("Drivetrain").getEntry("Setpoint");
+    NetworkTableEntry nSetpoint = inst.getTable("Drivetrain").getEntry("Setpoint");    
+    NetworkTableEntry leftOdometryDistance = inst.getTable("Drivetrain").getEntry("Left Distance");
+    NetworkTableEntry rightOdometryDistance = inst.getTable("Drivetrain").getEntry("Right Distance");
+    NetworkTableEntry leftOdometryRotations = inst.getTable("Drivetrain").getEntry("Left Rotations");
+    NetworkTableEntry rightOdometryRotations = inst.getTable("Drivetrain").getEntry("Right Rotations");
+
     nAngle.setPersistent();
-    nSetpoint.setPersistent();
+    nSetpoint.setPersistent();    
+    leftOdometryDistance.setPersistent();
+    rightOdometryDistance.setPersistent();
+    leftOdometryRotations.setPersistent();
+    rightOdometryRotations.setPersistent();
 
 
     left_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainLeader);
@@ -82,15 +94,23 @@ public class Drivetrain extends SubsystemBase {
 
 
     left_motor.setInverted(true);
+
+    initialLeftRot = left_motor.getSelectedSensorPosition();
+    initialRightRot = right_motor.getSelectedSensorPosition();
   }
 
   @Override
   public void periodic() {
-        System.out.println(left_motor.getSelectedSensorPosition()  + ", " + right_follow_motor.getSelectedSensorPosition());
-
     double currentAngle = getAngle();
     inst.getTable("Drivetrain").getEntry("Angle").setDouble(currentAngle);
     inst.getTable("Drivetrain").getEntry("Setpoint").setDouble(targetAngle);
+
+    inst.getTable("Drivetrain").getEntry("Left Rotations").setDouble(left_motor.getSelectedSensorPosition() - initialLeftRot);
+    inst.getTable("Drivetrain").getEntry("Right Rotations").setDouble(right_follow_motor.getSelectedSensorPosition() - initialRightRot);
+
+    inst.getTable("Drivetrain").getEntry("Left Distance").setDouble((left_motor.getSelectedSensorPosition() - initialLeftRot) * Constants.encoderRotationToMeters);
+    inst.getTable("Drivetrain").getEntry("Right Distance").setDouble((right_follow_motor.getSelectedSensorPosition() - initialRightRot) * Constants.encoderRotationToMeters);
+
     if(autonomous) {
       targetAngle = Math.max(-180, Math.min(targetAngle, 180));
       pid.setSetpoint(targetAngle);
