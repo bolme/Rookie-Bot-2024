@@ -94,7 +94,7 @@ public class RobotContainer {
           .onFalse(new InstantCommand(()->{ 
               intakeCommand.cancel();
             }));
-    new JoystickButton(xbox, Button.kStart.value).onTrue(new InstantCommand(()->{ drivetrain.resetGyro(); }));
+    new JoystickButton(xbox, Button.kStart.value).onTrue(new InstantCommand(()->{ drivetrain.resetOdometry(); }));
 
 
     /** 

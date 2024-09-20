@@ -94,9 +94,9 @@ public class Drivetrain extends SubsystemBase {
 
 
     left_motor.setInverted(true);
-
-    initialLeftRot = left_motor.getSelectedSensorPosition();
-    initialRightRot = right_motor.getSelectedSensorPosition();
+    
+    resetPosition();
+    
   }
 
   @Override
@@ -139,5 +139,13 @@ public class Drivetrain extends SubsystemBase {
   public void resetGyro() {
     navX.reset();
     targetAngle = getAngle();
+  }
+  public void resetPosition() {
+    initialLeftRot = left_motor.getSelectedSensorPosition();
+    initialRightRot = right_follow_motor.getSelectedSensorPosition();
+  }
+  public void resetOdometry() {
+    resetGyro();
+    resetPosition();
   }
 }

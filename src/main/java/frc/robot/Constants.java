@@ -4,7 +4,7 @@ import edu.wpi.first.math.util.Units;
 
 public interface Constants {
 
-  // public static final double intakeVoltage = 10;
+  public static final double intakeVoltage = 10;
   // public static final double gearRatio = 101850;//6.12;
   // public static final int detectThreshold = 1000;
   // public static final double botMass = 24.4;
@@ -18,9 +18,9 @@ public interface Constants {
   // public static final double maxChassisTurnSpeed = maxSpeed/botRadius; // Max Speed divided by the circumference a circle determined by the distance of the module from the center, divided by 2 pi to convert to radians
   // public static final double encoderRotationToMeters = wheelCircumfrance/gearRatio; //2*Math.PI*((wheelDiameter/2)/gearRatio)/42;
 
-  public static final double gearRatio = 101850;
-  public static final double wheelCircumfrance = 0.47;
-  public static final double encoderRotationToMeters = wheelCircumfrance/gearRatio;
+  public static final double enocoderToRevolution = 101850;
+  public static final double wheelCircumfrance = 0.47 * 1.54;
+  public static final double encoderRotationToMeters = wheelCircumfrance/enocoderToRevolution;
 
   public static class MotorIds {
     public static final int leftDrivetrainLeader = 1;
