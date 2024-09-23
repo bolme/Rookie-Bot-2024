@@ -100,9 +100,6 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putData("Field", m_field);
 
     left_motor.setInverted(true);
-    
-    
-    
   }
 
   @Override

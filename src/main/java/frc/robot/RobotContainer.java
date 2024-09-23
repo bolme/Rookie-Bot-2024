@@ -151,4 +151,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
+  public static Command getOdometryPositionCommand() {
+    return positionChooser.getSelected()
+  }
 }

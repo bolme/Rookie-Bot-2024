@@ -49,7 +49,7 @@ public class Robot extends TimedRobot implements Constants{
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     Arm.getInstance().enable();
-
+    RobotContainer.getOdometryPositionCommand().schedule();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     } 
