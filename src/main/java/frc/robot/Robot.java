@@ -43,13 +43,13 @@ public class Robot extends TimedRobot implements Constants{
 
   @Override
   public void autonomousInit() {
+    m_robotContainer.getOdometryPositionCommand().schedule();
     CommandScheduler.getInstance().cancelAll();
     Drivetrain.autonomous = true;
     Drivetrain.targetAngle = drivetrain.getAngle();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     Arm.getInstance().enable();
-    m_robotContainer.getOdometryPositionCommand().schedule();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     } 
@@ -60,6 +60,7 @@ public class Robot extends TimedRobot implements Constants{
 
   @Override
   public void teleopInit() {
+    m_robotContainer.getOdometryPositionCommand().schedule();
     CommandScheduler.getInstance().cancelAll();
     Drivetrain.autonomous = false;
     Arm.getInstance().enable();

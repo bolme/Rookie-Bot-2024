@@ -58,34 +58,27 @@ public class RobotContainer {
     arm = Arm.getInstance();
 
     autoChooser.addOption("Mobility", new MobilityAuto());
-    autoChooser.addOption("OneNote", new OneNoteAuto());
+    autoChooser.addOption("Nothing", new ());
+    autoChooser.setDefaultOption("OneNote", new OneNoteAuto());
     autoChooser.addOption("Middle Speaker and Mobily", new OneNoteAndMobility());
     autoChooser.addOption("Test", new TestAuto());
 
-    positionChooser.addOption("Amp-Side Speaker", new InstantCommand(()->{ 
-        if(allianceChooser.getSelected() == Drivetrain.Alliance.BLUE) {
-          Drivetrain.setOdometryPosition(0, 0, 0);
-        } else {
-          Drivetrain.setOdometryPosition(0, 0, 0);
-        }
-      }));
-    positionChooser.addOption("Middle Speaker", new InstantCommand(()->{ 
-        if(allianceChooser.getSelected() == Drivetrain.Alliance.BLUE) {
-          Drivetrain.setOdometryPosition(0, 0, 0);
-        } else {
-          Drivetrain.setOdometryPosition(0, 0, 0);
-        }
-      }));
-    positionChooser.addOption("Source-Side Speaker", new InstantCommand(()->{ 
-        if(allianceChooser.getSelected() == Drivetrain.Alliance.BLUE) {
-          Drivetrain.setOdometryPosition(0, 0, 0);
-        } else {
-          Drivetrain.setOdometryPosition(0, 0, 0);
-        }
-      }));
-
     allianceChooser.addOption("Red", Drivetrain.Alliance.RED);
-    allianceChooser.addOption("Blue", Drivetrain.Alliance.BLUE);
+    allianceChooser.setDefaultOption ("Blue", Drivetrain.Alliance.BLUE);
+    
+    allianceChooser.addListener(()->{
+      Drivetrain.Alliance alliance = allianceChooser.getSelected();
+      positionChooser.clearOptions()
+      if(alliance == Drivetrain.Alliance.BLUE) {
+        positionChooser.addOption("Amp-Side Speaker", new InstantCommand(()->{ Drivetrain.setOdometryPosition(0, 0, 0); }))
+        positionChooser.addOption("Middle Speaker", new InstantCommand(()->{ Drivetrain.setOdometryPosition(1.36, 5.5, 0); }))
+        positionChooser.addOption("Source-Side Speaker", new InstantCommand(()->{ Drivetrain.setOdometryPosition(0, 0, 0); }))
+      } else if (alliance == Drivetrain.Alliance.RED) {
+        positionChooser.addOption("Amp-Side Speaker", new InstantCommand(()->{ Drivetrain.setOdometryPosition(0, 0, 0); }))
+        positionChooser.addOption("Middle Speaker", new InstantCommand(()->{ Drivetrain.setOdometryPosition(1.36, 5.5, 0); }))
+        positionChooser.addOption("Source-Side Speaker", new InstantCommand(()->{ Drivetrain.setOdometryPosition(0, 0, 0); }))
+      }
+    })
     
     SmartDashboard.putData("Auto", autoChooser);
     SmartDashboard.putData("Position", positionChooser);
