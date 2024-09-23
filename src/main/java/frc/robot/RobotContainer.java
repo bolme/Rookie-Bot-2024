@@ -45,7 +45,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class RobotContainer {
   SendableChooser<Command> autoChooser = new SendableChooser<>();
   SendableChooser<Drivetrain.Position> positionChooser = new SendableChooser<>();
-  SendableChooser<Drivetrain.Alliance> allianceChooser = new SendableChooser<>();
 
   public static XboxController xbox = Robot.xbox;
   public static IntakeShooter intakeShooter;
@@ -58,11 +57,6 @@ public class RobotContainer {
     arm = Arm.getInstance();
 
     autoChooser.addOption("Please", null);
-
-    allianceChooser.addOption("Red", Drivetrain.Alliance.RED);
-    allianceChooser.setDefaultOption ("Blue", Drivetrain.Alliance.BLUE);
-    allianceChooser.addListener(()->{ Drivetrain.alliance = allianceChooser.getSelected(); })
-
 
     /* IMPORTANT: To add a position, you must:
      * 1. add an entry here
@@ -107,7 +101,6 @@ public class RobotContainer {
     
     SmartDashboard.putData("Auto", autoChooser);
     SmartDashboard.putData("Position", positionChooser);
-    SmartDashboard.putData("Alliance", allianceChooser);
  
     configureBindings();
   }
