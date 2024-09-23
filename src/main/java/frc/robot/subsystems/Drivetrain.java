@@ -43,9 +43,6 @@ public class Drivetrain extends SubsystemBase {
   private final double I = 0.075;
   private final double D = 0.01;
 
-  private double initialLeftRot = 0;
-  private double initialRightRot = 0;
-
   private PIDController pid;
   private double pidOutput;
 
@@ -95,12 +92,11 @@ public class Drivetrain extends SubsystemBase {
 
 
     differentialDrive = new DifferentialDrive(left_motor, right_motor);
-    resetPosition();
     Drivetrain.odometry = new DifferentialDriveOdometry(
         getRotation2d(),
         getLeftDistance(), 
         getRightDistance(),
-        new Pose2d(5.0, 13.5, new Rotation2d()));
+        new Pose2d(0.0, 0, new Rotation2d()));
     field = new Field2d();
     SmartDashboard.putData("Field", field);
 
@@ -113,8 +109,8 @@ public class Drivetrain extends SubsystemBase {
     inst.getTable("Drivetrain").getEntry("Angle").setDouble(currentAngle);
     inst.getTable("Drivetrain").getEntry("Setpoint").setDouble(targetAngle);
 
-    inst.getTable("Drivetrain").getEntry("Left Distance").setDouble((left_motor.getSelectedSensorPosition() - initialLeftRot) * Constants.encoderRotationToMeters);
-    inst.getTable("Drivetrain").getEntry("Right Distance").setDouble((right_follow_motor.getSelectedSensorPosition() - initialRightRot) * Constants.encoderRotationToMeters);
+    inst.getTable("Drivetrain").getEntry("Left Distance").setDouble((left_motor.getSelectedSensorPosition()) * Constants.encoderRotationToMeters);
+    inst.getTable("Drivetrain").getEntry("Right Distance").setDouble((right_follow_motor.getSelectedSensorPosition()) * Constants.encoderRotationToMeters);
 
     if(autonomous) {
       targetAngle = Math.max(-180, Math.min(targetAngle, 180));
@@ -152,19 +148,11 @@ public class Drivetrain extends SubsystemBase {
     navX.reset();
     targetAngle = getAngle();
   }
-  public void resetPosition() {
-    initialLeftRot = left_motor.getSelectedSensorPosition();
-    initialRightRot = right_follow_motor.getSelectedSensorPosition();
-  }
-  public void resetOdometry() {
-    resetGyro();
-    resetPosition();
-  }
   public double getLeftDistance() {
-    return (left_motor.getSelectedSensorPosition() - initialLeftRot) * Constants.encoderRotationToMeters;
+    return (left_motor.getSelectedSensorPosition()) * Constants.encoderRotationToMeters;
   }
   public double getRightDistance() {
-    return (right_follow_motor.getSelectedSensorPosition() - initialRightRot) * Constants.encoderRotationToMeters;
+    return (right_follow_motor.getSelectedSensorPosition()) * Constants.encoderRotationToMeters;
   }
   public static void setOdometryPosition(double x, double y, double rotation) {
     Drivetrain drtr = Drivetrain.getInstance();
