@@ -44,7 +44,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class RobotContainer {
   SendableChooser<Command> autoChooser = new SendableChooser<>();
-  SendableChooser<Command> positionChooser = new SendableChooser<>();
+  SendableChooser<Drivetrain.Position> positionChooser = new SendableChooser<>();
   SendableChooser<Drivetrain.Alliance> allianceChooser = new SendableChooser<>();
 
   public static XboxController xbox = Robot.xbox;
@@ -57,27 +57,52 @@ public class RobotContainer {
     drivetrain = Drivetrain.getInstance();
     arm = Arm.getInstance();
 
-    autoChooser.addOption("Mobility", new MobilityAuto());
-    autoChooser.addOption("Nothing", new ());
-    autoChooser.setDefaultOption("OneNote", new OneNoteAuto());
-    autoChooser.addOption("Middle Speaker and Mobily", new OneNoteAndMobility());
-    autoChooser.addOption("Test", new TestAuto());
+    autoChooser.addOption("Please", null);
 
     allianceChooser.addOption("Red", Drivetrain.Alliance.RED);
     allianceChooser.setDefaultOption ("Blue", Drivetrain.Alliance.BLUE);
-    
-    allianceChooser.addListener(()->{
-      Drivetrain.Alliance alliance = allianceChooser.getSelected();
-      positionChooser.clearOptions()
-      if(alliance == Drivetrain.Alliance.BLUE) {
-        positionChooser.addOption("Amp-Side Speaker", new InstantCommand(()->{ Drivetrain.setOdometryPosition(0, 0, 0); }))
-        positionChooser.addOption("Middle Speaker", new InstantCommand(()->{ Drivetrain.setOdometryPosition(1.36, 5.5, 0); }))
-        positionChooser.addOption("Source-Side Speaker", new InstantCommand(()->{ Drivetrain.setOdometryPosition(0, 0, 0); }))
-      } else if (alliance == Drivetrain.Alliance.RED) {
-        positionChooser.addOption("Amp-Side Speaker", new InstantCommand(()->{ Drivetrain.setOdometryPosition(0, 0, 0); }))
-        positionChooser.addOption("Middle Speaker", new InstantCommand(()->{ Drivetrain.setOdometryPosition(1.36, 5.5, 0); }))
-        positionChooser.addOption("Source-Side Speaker", new InstantCommand(()->{ Drivetrain.setOdometryPosition(0, 0, 0); }))
+    allianceChooser.addListener(()->{ Drivetrain.alliance = allianceChooser.getSelected(); })
+
+
+    /* IMPORTANT: To add a position, you must:
+     * 1. add an entry here
+     * 2. add the valid autos in the switch statment in positionChooser's listener
+     * 3. add the enum name to the enum in Drivetrain.java
+     * 4. add the odometry location to the switch statment in the method setOdometryBasedOnPosition() in Drivetrain.java
+     */
+    positionChooser.addListener("Amp-Side Speaker", Drivetrain.Position.AMP_SIDE_SPEAKER);
+    positionChooser.addListener("Middle Speaker", Drivetrain.Position.AMP_SIDE_SPEAKER);
+    positionChooser.addListener("Source-Side Speaker", Drivetrain.Position.AMP_SIDE_SPEAKER);
+    // Custom positions do not have odometry
+    positionChooser.addListener("Custom Mobility - No Odom", Drivetrain.Position.CUSTOM_MOBILITY);
+    positionChooser.addListener("Custom - No Odom", Drivetrain.Position.CUSTOM);
+    positionChooser.addListener(()->{ 
+      Drivetrain.Position position = positionChooser.getSelected(); 
+      Drivetrain.position = position;
+
+      autoChooser.clearOptions();
+      autoChooser.addOption("Nothing", null);
+      
+      switch(position) {
+        case Drivetrain.Position.AMP_SIDE_SPEAKER:
+
+          autoChooser.setDefaultOption("OneNote", new OneNoteAuto());
+          break;
+        case Drivetrain.Position.MIDDLE_SPEAKER:
+          autoChooser.setDefaultOption("OneNote", new OneNoteAuto());
+          autoChooser.addOption("Middle Speaker and Mobily", new OneNoteAndMobility());
+          break;
+        case Drivetrain.Position.SOURCE_SIDE_SPEAKER:
+          autoChooser.setDefaultOption("OneNote", new OneNoteAuto());
+          break;
+        case Drivetrain.Position.CUSTOM_MOBILITY:
+          autoChooser.addOption("Mobility", new MobilityAuto());
+          break;
+        case Drivetrain.Position.CUSTOM:
+          break;
       }
+      autoChooser.addOption("Test - NOT FOR COMP", new TestAuto());
+      SmartDashboard.putData("Auto", autoChooser);
     })
     
     SmartDashboard.putData("Auto", autoChooser);

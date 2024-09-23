@@ -53,8 +53,10 @@ public class Drivetrain extends SubsystemBase {
   public static Pose2d robotPose;
 
   public static enum Alliance { RED, BLUE };
-
   public static Alliance alliance;
+
+  public static enum Position { AMP_SIDE_SPEAKER, MIDDLE_SPEAKER, SOURCE_SIDE_SPEAKER, CUSTOM_MOBILITY, CUSTOM }
+  public static enum position;
 
   private final double maxSpeed = 1;
 
@@ -160,5 +162,32 @@ public class Drivetrain extends SubsystemBase {
   public static void setOdometryPosition(double x, double y, double rotation) {
     Drivetrain drtr = Drivetrain.getInstance();
     odometry.resetPosition(drtr.getRotation2d(), drtr.getLeftDistance(), drtr.getRightDistance(), new Pose2d(x, y, new Rotation2d(Math.toRadians(rotation))));
+  }
+  public static void setOdometryBasedOnPosition() {
+    if(alliance == Alliance.BLUE) {
+      switch(position) {
+        case Position.AMP_SIDE_SPEAKER:
+          Drivetrain.setOdometryPosition(0, 0, 0);
+          break;
+        case Position.MIDDLE_SPEAKER:
+          Drivetrain.setOdometryPosition(1.36, 5.5, 0);
+          break;
+        case Position.SOURCE_SIDE_SPEAKER:
+          Drivetrain.setOdometryPosition(0, 0, 0);
+          break;
+      }
+    } else if (alliance == Alliance.RED) {
+      switch(position) {
+        case Position.AMP_SIDE_SPEAKER:
+          Drivetrain.setOdometryPosition(0, 0, 0);
+          break;
+        case Position.MIDDLE_SPEAKER:
+          Drivetrain.setOdometryPosition(1.36, 5.5, 0);
+          break;
+        case Position.SOURCE_SIDE_SPEAKER:
+          Drivetrain.setOdometryPosition(0, 0, 0);
+          break;
+      }
+    }
   }
 }
