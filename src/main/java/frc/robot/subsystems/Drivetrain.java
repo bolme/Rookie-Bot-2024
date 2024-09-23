@@ -50,10 +50,14 @@ public class Drivetrain extends SubsystemBase {
 
   public static Pose2d robotPose;
 
+  public static enum Alliance { RED, BLUE };
+
+  public static Alliance alliance;
+
   private final double maxSpeed = 1;
 
   private Field2d field;
-  private DifferentialDriveOdometry odometry;
+  private static DifferentialDriveOdometry odometry;
 
   public static Drivetrain getInstance() {
     instance = (instance != null) ? instance : new Drivetrain(); 
@@ -87,7 +91,7 @@ public class Drivetrain extends SubsystemBase {
 
     differentialDrive = new DifferentialDrive(left_motor, right_motor);
     resetPosition();
-    odometry = new DifferentialDriveOdometry(
+    Drivetrain.odometry = new DifferentialDriveOdometry(
         getRotation2d(),
         getLeftDistance(), 
         getRightDistance(),
@@ -120,11 +124,11 @@ public class Drivetrain extends SubsystemBase {
     } else {
       pidOutput = 0;
     }
-    Drivetrain.robotPose = odometry.update(
+    Drivetrain.robotPose = Drivetrain.odometry.update(
         getRotation2d(),
         getLeftDistance(), 
         getRightDistance());
-    field.setRobotPose(m_odometry.getPoseMeters());
+    field.setRobotPose(Drivetrain.odometry.getPoseMeters());
     this.drive(Robot.xbox.getRightX(), Robot.xbox.getLeftY());
   }
 
@@ -160,7 +164,7 @@ public class Drivetrain extends SubsystemBase {
   public double getRightDistance() {
     return (right_follow_motor.getSelectedSensorPosition() - initialRightRot) * Constants.encoderRotationToMeters;
   }
-  public void setOdometryPosition(double x, double y, double rotation) {
-    odometry.resetPosition(new Rotation2d(),x,y)
+  public static void setOdometryPosition(double x, double y, double rotation) {
+    Drivetrain.odometry.resetPosition(new Rotation2d(Math.toRadians(rotation)),x,y)
   }
 }

@@ -44,6 +44,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class RobotContainer {
   SendableChooser<Command> autoChooser = new SendableChooser<>();
+  SendableChooser<Command> positionChooser = new SendableChooser<>();
+  SendableChooser<Drivetrain.Alliance> allianceChooser = new SendableChooser<>();
 
   public static XboxController xbox = Robot.xbox;
   public static IntakeShooter intakeShooter;
@@ -60,7 +62,34 @@ public class RobotContainer {
     autoChooser.addOption("Middle Speaker and Mobily", new OneNoteAndMobility());
     autoChooser.addOption("Test", new TestAuto());
 
+    positionChooser.addOption("Amp-Side Speaker", new InstantCommand(()=>{ 
+        if(allianceChooser.getSelected() == Drivetrain.Alliance.BLUE) {
+          Drivetrain.setOdometryPosition(0, 0, 0);
+        } else {
+          Drivetrain.setOdometryPosition(0, 0, 0);
+        }
+      }));
+    positionChooser.addOption("Middle Speaker", new InstantCommand(()=>{ 
+        if(allianceChooser.getSelected() == Drivetrain.Alliance.BLUE) {
+          Drivetrain.setOdometryPosition(0, 0, 0);
+        } else {
+          Drivetrain.setOdometryPosition(0, 0, 0);
+        }
+      }));
+    positionChooser.addOption("Source-Side Speaker", new InstantCommand(()=>{ 
+        if(allianceChooser.getSelected() == Drivetrain.Alliance.BLUE) {
+          Drivetrain.setOdometryPosition(0, 0, 0);
+        } else {
+          Drivetrain.setOdometryPosition(0, 0, 0);
+        }
+      }));
+
+    allianceChooser.addOption("Red", Drivetrain.Alliance.RED);
+    allianceChooser.addOption("Blue", Drivetrain.Alliance.BLUE);
+    
     SmartDashboard.putData("Auto", autoChooser);
+    SmartDashboard.putData("Position", positionChooser);
+    SmartDashboard.putData("Alliance", allianceChooser);
  
     configureBindings();
   }
