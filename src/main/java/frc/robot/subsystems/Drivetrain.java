@@ -167,24 +167,29 @@ public class Drivetrain extends SubsystemBase {
     if(alliance == Alliance.BLUE) {
       switch(position) {
         case Position.AMP_SIDE_SPEAKER:
+          // TODO: Update to correct pose
           Drivetrain.setOdometryPosition(0, 0, 0);
           break;
         case Position.MIDDLE_SPEAKER:
           Drivetrain.setOdometryPosition(1.36, 5.5, 0);
           break;
         case Position.SOURCE_SIDE_SPEAKER:
+          // TODO: Update to correct pose
           Drivetrain.setOdometryPosition(0, 0, 0);
           break;
       }
     } else if (alliance == Alliance.RED) {
       switch(position) {
         case Position.AMP_SIDE_SPEAKER:
+          // TODO: Update to correct pose
           Drivetrain.setOdometryPosition(0, 0, 0);
           break;
         case Position.MIDDLE_SPEAKER:
-          Drivetrain.setOdometryPosition(1.36, 5.5, 0);
+          // TODO: Update to correct pose
+          Drivetrain.setOdometryPosition(0, 0, 0);
           break;
         case Position.SOURCE_SIDE_SPEAKER:
+          // TODO: Update to correct pose
           Drivetrain.setOdometryPosition(0, 0, 0);
           break;
       }
