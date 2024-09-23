@@ -52,6 +52,7 @@ public class Drivetrain extends SubsystemBase {
 
   private final double maxSpeed = 1;
 
+  private Field2d field;
   private DifferentialDriveOdometry odometry;
 
   public static Drivetrain getInstance() {
@@ -85,15 +86,18 @@ public class Drivetrain extends SubsystemBase {
 
 
     differentialDrive = new DifferentialDrive(left_motor, right_motor);
+    resetPosition();
     odometry = new DifferentialDriveOdometry(
         getRotation2d(),
         getLeftDistance(), 
         getRightDistance(),
         new Pose2d(5.0, 13.5, new Rotation2d()));
+    field = new Field2d();
+    SmartDashboard.putData("Field", m_field);
 
     left_motor.setInverted(true);
     
-    resetPosition();
+    
     
   }
 
@@ -120,6 +124,7 @@ public class Drivetrain extends SubsystemBase {
         getRotation2d(),
         getLeftDistance(), 
         getRightDistance());
+    field.setRobotPose(m_odometry.getPoseMeters());
     this.drive(Robot.xbox.getRightX(), Robot.xbox.getLeftY());
   }
 
@@ -149,10 +154,13 @@ public class Drivetrain extends SubsystemBase {
     resetGyro();
     resetPosition();
   }
-  public getLeftDistance() {
+  public double getLeftDistance() {
     return (left_motor.getSelectedSensorPosition() - initialLeftRot) * Constants.encoderRotationToMeters;
   }
-  public getRightDistance() {
+  public double getRightDistance() {
     return (right_follow_motor.getSelectedSensorPosition() - initialRightRot) * Constants.encoderRotationToMeters;
+  }
+  public void setOdometryPosition(double x, double y, double rotation) {
+    odometry.resetPosition(new Rotation2d(),x,y)
   }
 }
