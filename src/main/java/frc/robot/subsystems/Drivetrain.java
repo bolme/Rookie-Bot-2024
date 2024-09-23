@@ -148,6 +148,9 @@ public class Drivetrain extends SubsystemBase {
     navX.reset();
     targetAngle = getAngle();
   }
+  public void resetPositionToZero() {
+    Drivetrain.setOdometryPosition(0, 0, 0);
+  }
   public double getLeftDistance() {
     return (left_motor.getSelectedSensorPosition()) * Constants.encoderRotationToMeters;
   }
