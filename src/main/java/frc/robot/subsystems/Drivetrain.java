@@ -6,7 +6,11 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
+import java.util.Optional;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -52,10 +56,10 @@ public class Drivetrain extends SubsystemBase {
 
   public static Pose2d robotPose;
 
-  public static Alliance alliance;
+  public static Optional<Alliance> alliance;
 
   public static enum Position { AMP_SIDE_SPEAKER, MIDDLE_SPEAKER, SOURCE_SIDE_SPEAKER, CUSTOM_MOBILITY, CUSTOM }
-  public static enum position;
+  public static Position position;
 
   private final double maxSpeed = 1;
 
@@ -164,31 +168,31 @@ public class Drivetrain extends SubsystemBase {
   }
   public static void setOdometryBasedOnPosition() {
     alliance = DriverStation.getAlliance();
-    if(alliance == Alliance.Blue) {
+    if(alliance.get() == Alliance.Blue) {
       switch(position) {
-        case Position.AMP_SIDE_SPEAKER:
+        case AMP_SIDE_SPEAKER:
           // TODO: Update to correct pose
           Drivetrain.setOdometryPosition(0, 0, 0);
           break;
-        case Position.MIDDLE_SPEAKER:
+        case MIDDLE_SPEAKER:
           Drivetrain.setOdometryPosition(1.36, 5.5, 0);
           break;
-        case Position.SOURCE_SIDE_SPEAKER:
+        case SOURCE_SIDE_SPEAKER:
           // TODO: Update to correct pose
           Drivetrain.setOdometryPosition(0, 0, 0);
           break;
       }
-    } else if (alliance == Alliance.Red) {
+    } else if (alliance.get() == Alliance.Red) {
       switch(position) {
-        case Position.AMP_SIDE_SPEAKER:
+        case AMP_SIDE_SPEAKER:
           // TODO: Update to correct pose
           Drivetrain.setOdometryPosition(0, 0, 0);
           break;
-        case Position.MIDDLE_SPEAKER:
+        case MIDDLE_SPEAKER:
           // TODO: Update to correct pose
           Drivetrain.setOdometryPosition(0, 0, 0);
           break;
-        case Position.SOURCE_SIDE_SPEAKER:
+        case SOURCE_SIDE_SPEAKER:
           // TODO: Update to correct pose
           Drivetrain.setOdometryPosition(0, 0, 0);
           break;

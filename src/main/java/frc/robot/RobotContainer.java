@@ -64,40 +64,41 @@ public class RobotContainer {
      * 3. add the enum name to the enum in Drivetrain.java
      * 4. add the odometry location to the switch statment in the method setOdometryBasedOnPosition() in Drivetrain.java
      */
-    positionChooser.addListener("Amp-Side Speaker", Drivetrain.Position.AMP_SIDE_SPEAKER);
-    positionChooser.addListener("Middle Speaker", Drivetrain.Position.AMP_SIDE_SPEAKER);
-    positionChooser.addListener("Source-Side Speaker", Drivetrain.Position.AMP_SIDE_SPEAKER);
+    positionChooser.addOption("Amp-Side Speaker", Drivetrain.Position.AMP_SIDE_SPEAKER);
+    positionChooser.addOption("Middle Speaker", Drivetrain.Position.AMP_SIDE_SPEAKER);
+    positionChooser.addOption("Source-Side Speaker", Drivetrain.Position.AMP_SIDE_SPEAKER);
     // Custom positions do not have odometry
-    positionChooser.addListener("Custom Mobility - No Odom", Drivetrain.Position.CUSTOM_MOBILITY);
-    positionChooser.addListener("Custom - No Odom", Drivetrain.Position.CUSTOM);
-    positionChooser.addListener(()->{ 
+    positionChooser.addOption("Custom Mobility - No Odom", Drivetrain.Position.CUSTOM_MOBILITY);
+    positionChooser.addOption("Custom - No Odom", Drivetrain.Position.CUSTOM);
+    positionChooser.onChange((pos)->{ 
       Drivetrain.Position position = positionChooser.getSelected(); 
       Drivetrain.position = position;
 
-      autoChooser.clearOptions();
+      autoChooser.close();
+      autoChooser = new SendableChooser<>();
       autoChooser.addOption("Nothing", null);
       
       switch(position) {
-        case Drivetrain.Position.AMP_SIDE_SPEAKER:
+        case AMP_SIDE_SPEAKER:
 
           autoChooser.setDefaultOption("OneNote", new OneNoteAuto());
           break;
-        case Drivetrain.Position.MIDDLE_SPEAKER:
+        case MIDDLE_SPEAKER:
           autoChooser.setDefaultOption("OneNote", new OneNoteAuto());
           autoChooser.addOption("Middle Speaker and Mobily", new OneNoteAndMobility());
           break;
-        case Drivetrain.Position.SOURCE_SIDE_SPEAKER:
+        case SOURCE_SIDE_SPEAKER:
           autoChooser.setDefaultOption("OneNote", new OneNoteAuto());
           break;
-        case Drivetrain.Position.CUSTOM_MOBILITY:
+        case CUSTOM_MOBILITY:
           autoChooser.addOption("Mobility", new MobilityAuto());
           break;
-        case Drivetrain.Position.CUSTOM:
+        case CUSTOM:
           break;
       }
       autoChooser.addOption("Test - NOT FOR COMP", new TestAuto());
       SmartDashboard.putData("Auto", autoChooser);
-    })
+    });
     
     SmartDashboard.putData("Auto", autoChooser);
     SmartDashboard.putData("Position", positionChooser);
@@ -161,8 +162,5 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
-  }
-  public Command getOdometryPositionCommand() {
-    return positionChooser.getSelected();
   }
 }
