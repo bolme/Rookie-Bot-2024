@@ -48,7 +48,11 @@ public class Drivetrain extends SubsystemBase {
 
   public static double targetAngle;
 
+  public static Pose2d robotPose;
+
   private final double maxSpeed = 1;
+
+  private DifferentialDriveOdometry odometry;
 
   public static Drivetrain getInstance() {
     instance = (instance != null) ? instance : new Drivetrain(); 
@@ -59,19 +63,9 @@ public class Drivetrain extends SubsystemBase {
   private Drivetrain() {
     pid = new PIDController(P, I, D);
     targetAngle = getAngle();
-    NetworkTableEntry nAngle = inst.getTable("Drivetrain").getEntry("Angle");
-    NetworkTableEntry nSetpoint = inst.getTable("Drivetrain").getEntry("Setpoint");    
-    NetworkTableEntry leftOdometryDistance = inst.getTable("Drivetrain").getEntry("Left Distance");
-    NetworkTableEntry rightOdometryDistance = inst.getTable("Drivetrain").getEntry("Right Distance");
-    NetworkTableEntry leftOdometryRotations = inst.getTable("Drivetrain").getEntry("Left Rotations");
-    NetworkTableEntry rightOdometryRotations = inst.getTable("Drivetrain").getEntry("Right Rotations");
 
-    nAngle.setPersistent();
-    nSetpoint.setPersistent();    
-    leftOdometryDistance.setPersistent();
-    rightOdometryDistance.setPersistent();
-    leftOdometryRotations.setPersistent();
-    rightOdometryRotations.setPersistent();
+    NetworkTableEntry nSetpoint = inst.getTable("Drivetrain").getEntry("Setpoint");    
+    nSetpoint.setPersistent();   
 
 
     left_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainLeader);
@@ -91,7 +85,11 @@ public class Drivetrain extends SubsystemBase {
 
 
     differentialDrive = new DifferentialDrive(left_motor, right_motor);
-
+    odometry = new DifferentialDriveOdometry(
+        getRotation2d(),
+        getLeftDistance(), 
+        getRightDistance(),
+        new Pose2d(5.0, 13.5, new Rotation2d()));
 
     left_motor.setInverted(true);
     
@@ -104,9 +102,6 @@ public class Drivetrain extends SubsystemBase {
     double currentAngle = getAngle();
     inst.getTable("Drivetrain").getEntry("Angle").setDouble(currentAngle);
     inst.getTable("Drivetrain").getEntry("Setpoint").setDouble(targetAngle);
-
-    inst.getTable("Drivetrain").getEntry("Left Rotations").setDouble(left_motor.getSelectedSensorPosition() - initialLeftRot);
-    inst.getTable("Drivetrain").getEntry("Right Rotations").setDouble(right_follow_motor.getSelectedSensorPosition() - initialRightRot);
 
     inst.getTable("Drivetrain").getEntry("Left Distance").setDouble((left_motor.getSelectedSensorPosition() - initialLeftRot) * Constants.encoderRotationToMeters);
     inst.getTable("Drivetrain").getEntry("Right Distance").setDouble((right_follow_motor.getSelectedSensorPosition() - initialRightRot) * Constants.encoderRotationToMeters);
@@ -121,7 +116,10 @@ public class Drivetrain extends SubsystemBase {
     } else {
       pidOutput = 0;
     }
-    
+    Drivetrain.robotPose = odometry.update(
+        getRotation2d(),
+        getLeftDistance(), 
+        getRightDistance());
     this.drive(Robot.xbox.getRightX(), Robot.xbox.getLeftY());
   }
 
@@ -135,6 +133,9 @@ public class Drivetrain extends SubsystemBase {
   public double getAbsoluteAngle() {
     return navX.getAngle();
   }
+  public Rotation2d getRotation2d() {
+    return navX.getRotation2d()
+  }
   
   public void resetGyro() {
     navX.reset();
@@ -147,5 +148,11 @@ public class Drivetrain extends SubsystemBase {
   public void resetOdometry() {
     resetGyro();
     resetPosition();
+  }
+  public getLeftDistance() {
+    return (left_motor.getSelectedSensorPosition() - initialLeftRot) * Constants.encoderRotationToMeters;
+  }
+  public getRightDistance() {
+    return (right_follow_motor.getSelectedSensorPosition() - initialRightRot) * Constants.encoderRotationToMeters;
   }
 }
