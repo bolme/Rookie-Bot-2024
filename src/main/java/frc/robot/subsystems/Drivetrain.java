@@ -11,7 +11,12 @@ import edu.wpi.first.wpilibj.SPI;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -97,7 +102,7 @@ public class Drivetrain extends SubsystemBase {
         getRightDistance(),
         new Pose2d(5.0, 13.5, new Rotation2d()));
     field = new Field2d();
-    SmartDashboard.putData("Field", m_field);
+    SmartDashboard.putData("Field", field);
 
     left_motor.setInverted(true);
   }
@@ -140,7 +145,7 @@ public class Drivetrain extends SubsystemBase {
     return navX.getAngle();
   }
   public Rotation2d getRotation2d() {
-    return navX.getRotation2d()
+    return navX.getRotation2d();
   }
   
   public void resetGyro() {
@@ -162,6 +167,7 @@ public class Drivetrain extends SubsystemBase {
     return (right_follow_motor.getSelectedSensorPosition() - initialRightRot) * Constants.encoderRotationToMeters;
   }
   public static void setOdometryPosition(double x, double y, double rotation) {
-    Drivetrain.odometry.resetPosition(new Rotation2d(Math.toRadians(rotation)),x,y)
+    Drivetrain drtr = Drivetrain.getInstance();
+    odometry.resetPosition(drtr.getRotation2d(), drtr.getLeftDistance(), drtr.getRightDistance(), new Pose2d(x, y, new Rotation2d(Math.toRadians(rotation))));
   }
 }

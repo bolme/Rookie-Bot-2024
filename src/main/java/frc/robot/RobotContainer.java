@@ -62,21 +62,21 @@ public class RobotContainer {
     autoChooser.addOption("Middle Speaker and Mobily", new OneNoteAndMobility());
     autoChooser.addOption("Test", new TestAuto());
 
-    positionChooser.addOption("Amp-Side Speaker", new InstantCommand(()=>{ 
+    positionChooser.addOption("Amp-Side Speaker", new InstantCommand(()->{ 
         if(allianceChooser.getSelected() == Drivetrain.Alliance.BLUE) {
           Drivetrain.setOdometryPosition(0, 0, 0);
         } else {
           Drivetrain.setOdometryPosition(0, 0, 0);
         }
       }));
-    positionChooser.addOption("Middle Speaker", new InstantCommand(()=>{ 
+    positionChooser.addOption("Middle Speaker", new InstantCommand(()->{ 
         if(allianceChooser.getSelected() == Drivetrain.Alliance.BLUE) {
           Drivetrain.setOdometryPosition(0, 0, 0);
         } else {
           Drivetrain.setOdometryPosition(0, 0, 0);
         }
       }));
-    positionChooser.addOption("Source-Side Speaker", new InstantCommand(()=>{ 
+    positionChooser.addOption("Source-Side Speaker", new InstantCommand(()->{ 
         if(allianceChooser.getSelected() == Drivetrain.Alliance.BLUE) {
           Drivetrain.setOdometryPosition(0, 0, 0);
         } else {
@@ -151,7 +151,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
-  public static Command getOdometryPositionCommand() {
-    return positionChooser.getSelected()
+  public Command getOdometryPositionCommand() {
+    return positionChooser.getSelected();
   }
 }
