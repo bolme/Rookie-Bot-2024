@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 //// Arm
 public class Arm extends SubsystemBase {
 
@@ -150,7 +151,10 @@ public class Arm extends SubsystemBase {
     // Get the current setpoint in the network table. Check the limits and then
     // update the PID controller with the current setpoint
     double setpoint = inst.getTable(kNTArm).getEntry(kNTSetpoint).getDouble(kDefaultSetpoint);
-
+    if(Robot.xbox.getRightBumper() && Math.abs(Robot.xbox.getLeftY()) > 0.075) { 
+      setAngle(setpoint + Robot.xbox.getLeftY());
+    }
+    setpoint = inst.getTable(kNTArm).getEntry(kNTSetpoint).getDouble(kDefaultSetpoint);
     if (setpoint > kMaxSetpoint) {
       setpoint = kMaxSetpoint;
     } else if (setpoint < kMinSetpoint) {

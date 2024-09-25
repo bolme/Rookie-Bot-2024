@@ -126,7 +126,9 @@ public class RobotContainer {
       .onTrue(new InstantCommand(()->{ Arm.getInstance().setAngle(Constants.ArmAngles.safeAngle); }))
       .whileTrue(new SequentialCommandGroup(new WaitCommand(1), new SetArmToAngle(Constants.ArmAngles.stowedAngle)));
     
-      
+    new JoystickButton(xbox, Button.kA.value)
+      .onTrue(new InstantCommand(()->{ intakeShooter.setIntakeVoltage(10); }))
+      .onFalse(new InstantCommand(()->{ intakeShooter.setIntakeVoltage(0); }));
     IntakeUntilNoteDetected intakeCommand = new IntakeUntilNoteDetected();
     new JoystickButton(xbox, Button.kLeftBumper.value)
           .onTrue(intakeCommand)

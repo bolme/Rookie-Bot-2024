@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 
 public class IntakeShooter extends SubsystemBase {
 
@@ -45,6 +47,7 @@ public class IntakeShooter extends SubsystemBase {
     public void periodic() {
         pieceDetected = !proximitySensor.get();
         SmartDashboard.putBoolean("NoteDetected", pieceDetected);
+        setShooterVoltage(RobotContainer.xbox.getRawAxis(3) * 10);
     }
 //fuck you grace - joseph
 //STAY AWAY FROM MY PRINTERSSSSSSS - kay

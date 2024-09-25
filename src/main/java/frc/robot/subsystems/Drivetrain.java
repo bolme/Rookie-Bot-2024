@@ -136,6 +136,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void drive(double percent_x, double percent_y) {
+    if(Robot.xbox.getRightBumper()) return;
     differentialDrive.arcadeDrive(percent_x + pidOutput, percent_y);
   }
 
