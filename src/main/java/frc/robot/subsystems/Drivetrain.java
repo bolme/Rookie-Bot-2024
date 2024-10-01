@@ -59,7 +59,7 @@ public class Drivetrain extends SubsystemBase {
   public static Optional<Alliance> alliance;
 
   public static enum Position { AMP_SIDE_SPEAKER, MIDDLE_SPEAKER, SOURCE_SIDE_SPEAKER, CUSTOM_MOBILITY, CUSTOM }
-  public static Position position;
+  public static Position position = Position.MIDDLE_SPEAKER;
 
   private final double maxSpeed = 1;
 
