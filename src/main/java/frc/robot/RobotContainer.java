@@ -65,8 +65,8 @@ public class RobotContainer {
      * 4. add the odometry location to the switch statment in the method setOdometryBasedOnPosition() in Drivetrain.java
      */
     positionChooser.addOption("Amp-Side Speaker", Drivetrain.Position.AMP_SIDE_SPEAKER);
-    positionChooser.addOption("Middle Speaker", Drivetrain.Position.AMP_SIDE_SPEAKER);
-    positionChooser.addOption("Source-Side Speaker", Drivetrain.Position.AMP_SIDE_SPEAKER);
+    positionChooser.addOption("Middle Speaker", Drivetrain.Position.MIDDLE_SPEAKER);
+    positionChooser.addOption("Source-Side Speaker", Drivetrain.Position.SOURCE_SIDE_SPEAKER);
     // Custom positions do not have odometry
     positionChooser.addOption("Custom Mobility - No Odom", Drivetrain.Position.CUSTOM_MOBILITY);
     positionChooser.addOption("Custom - No Odom", Drivetrain.Position.CUSTOM);
@@ -76,19 +76,20 @@ public class RobotContainer {
 
       autoChooser.close();
       autoChooser = new SendableChooser<>();
-      autoChooser.addOption("Nothing", null);
+      autoChooser.setDefaultOption("Nothing", null);
       
       switch(position) {
         case AMP_SIDE_SPEAKER:
 
-          autoChooser.setDefaultOption("OneNote", new OneNoteAuto());
+          autoChooser.addOption("OneNote", new OneNoteAuto());
           break;
         case MIDDLE_SPEAKER:
-          autoChooser.setDefaultOption("OneNote", new OneNoteAuto());
+          autoChooser.addOption("OneNote", new OneNoteAuto());
+          autoChooser.addOption("Mobility", new MobilityAuto());
           autoChooser.addOption("Middle Speaker and Mobily", new OneNoteAndMobility());
           break;
         case SOURCE_SIDE_SPEAKER:
-          autoChooser.setDefaultOption("OneNote", new OneNoteAuto());
+          autoChooser.addOption("OneNote", new OneNoteAuto());
           break;
         case CUSTOM_MOBILITY:
           autoChooser.addOption("Mobility", new MobilityAuto());
@@ -96,8 +97,9 @@ public class RobotContainer {
         case CUSTOM:
           break;
       }
-      autoChooser.addOption("Test - NOT FOR COMP", new TestAuto());
+      //autoChooser.addOption("Test - NOT FOR COMP", new TestAuto());
       SmartDashboard.putData("Auto", autoChooser);
+      drivetrain.setOdometryBasedOnPosition();
     });
     
     SmartDashboard.putData("Auto", autoChooser);

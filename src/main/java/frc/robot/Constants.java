@@ -20,7 +20,10 @@ public interface Constants {
 
   public static final double enocoderToRevolution = 101850;
   public static final double wheelCircumfrance = 0.47 * 1.54;
-  public static final double encoderRotationToMeters = wheelCircumfrance/enocoderToRevolution;
+  public static final double wheelDiameter = 0.152;
+  public static final double encoderResolution = 2048;
+  public static final double gearRatio = 34.4;
+  public static final double encoderRotationToMeters = (wheelDiameter * Math.PI) / (encoderResolution * gearRatio);
 
   public static class MotorIds {
     public static final int leftDrivetrainLeader = 1;

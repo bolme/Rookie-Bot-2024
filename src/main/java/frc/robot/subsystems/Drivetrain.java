@@ -59,10 +59,9 @@ public class Drivetrain extends SubsystemBase {
   public static Optional<Alliance> alliance;
 
   public static enum Position { AMP_SIDE_SPEAKER, MIDDLE_SPEAKER, SOURCE_SIDE_SPEAKER, CUSTOM_MOBILITY, CUSTOM }
-  public static Position position;
+  public static Position position = Position.MIDDLE_SPEAKER;
 
   private final double maxSpeed = 1;
-
   private Field2d field;
   private static DifferentialDriveOdometry odometry;
 
@@ -116,7 +115,6 @@ public class Drivetrain extends SubsystemBase {
 
     inst.getTable("Drivetrain").getEntry("Left Distance").setDouble((left_motor.getSelectedSensorPosition()) * Constants.encoderRotationToMeters);
     inst.getTable("Drivetrain").getEntry("Right Distance").setDouble((right_follow_motor.getSelectedSensorPosition()) * Constants.encoderRotationToMeters);
-
     if(autonomous) {
       targetAngle = Math.max(-180, Math.min(targetAngle, 180));
       pid.setSetpoint(targetAngle);
@@ -172,14 +170,14 @@ public class Drivetrain extends SubsystemBase {
       switch(position) {
         case AMP_SIDE_SPEAKER:
           // TODO: Update to correct pose
-          Drivetrain.setOdometryPosition(0, 0, 0);
+          Drivetrain.setOdometryPosition(0.8, 6.7, 60);
           break;
         case MIDDLE_SPEAKER:
           Drivetrain.setOdometryPosition(1.36, 5.5, 0);
           break;
         case SOURCE_SIDE_SPEAKER:
           // TODO: Update to correct pose
-          Drivetrain.setOdometryPosition(0, 0, 0);
+          Drivetrain.setOdometryPosition(0.8, 4.4, -60);
           break;
       }
     } else if (alliance.get() == Alliance.Red) {
