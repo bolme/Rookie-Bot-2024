@@ -52,7 +52,7 @@ public class Arm extends SubsystemBase {
 
   // Constants for the arm setpoint
   private static final double kDefaultSetpoint = 0.0; // The starting set point for the arm
-  private static final double kMaxSetpoint = 110; // Maximum setpoint; Test again with Amp 
+  private static final double kMaxSetpoint = 140; // Maximum setpoint; Test again with Amp 
   private static final double kMinSetpoint = -2; // Minimum setpoint
 
   // Constants for the arm control

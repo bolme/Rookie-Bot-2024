@@ -46,6 +46,6 @@ public class IntakeShooter extends SubsystemBase {
         pieceDetected = !proximitySensor.get();
         SmartDashboard.putBoolean("NoteDetected", pieceDetected);
     }
-//fuck you grace - joseph
+//fluf you grace - joseph
 //STAY AWAY FROM MY PRINTERSSSSSSS - kay
 }

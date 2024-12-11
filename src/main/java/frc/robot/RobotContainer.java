@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AmpShoot;
+import frc.robot.commands.ClimbMimic;
 import frc.robot.commands.DefaultShoot;
 import frc.robot.commands.IntakeUntilNoteDetected;
 import frc.robot.commands.LobShoot;
@@ -139,7 +140,7 @@ public class RobotContainer {
             }));
     new JoystickButton(xbox, Button.kStart.value).onTrue(new InstantCommand(()->{ drivetrain.setOdometryPosition(1.36, 5.5, 0); }));
 
-
+      new JoystickButton(xbox, Button.kRightBumper.value).onTrue(new ClimbMimic());
     /** 
      * BINDINGS
      * Left joystick - fowards and backwards
