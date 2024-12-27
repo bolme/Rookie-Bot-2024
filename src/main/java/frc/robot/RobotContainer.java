@@ -10,12 +10,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AmpShoot;
-import frc.robot.commands.ClimbMimic;
 import frc.robot.commands.DefaultShoot;
 import frc.robot.commands.IntakeUntilNoteDetected;
 import frc.robot.commands.LobShoot;
+import frc.robot.commands.MockClimb;
 import frc.robot.commands.SetArmToAngle;
 import frc.robot.commands.SpeakerShoot;
+import frc.robot.commands.Wheelie;
 import frc.robot.commands.autos.MobilityAuto;
 import frc.robot.commands.autos.OneNoteAndMobility;
 import frc.robot.commands.autos.OneNoteAuto;
@@ -132,6 +133,9 @@ public class RobotContainer {
       new JoystickButton(xbox, Button.kX.value).onTrue(new LobShoot());
     new JoystickButton(xbox, Button.kY.value).whileTrue(new AmpShoot());
     new JoystickButton(xbox, Button.kA.value).whileTrue(new SpeakerShoot());
+       //int angle = xbox.getPOV();
+       // If pov == 0 then run MockClimb
+       new Trigger(()->{ return xbox.getPOV() == 90; }).whileTrue(new MockClimb());
     IntakeUntilNoteDetected intakeCommand = new IntakeUntilNoteDetected();
     new JoystickButton(xbox, Button.kLeftBumper.value)
           .onTrue(intakeCommand)
@@ -139,8 +143,7 @@ public class RobotContainer {
               intakeCommand.cancel();
             }));
     new JoystickButton(xbox, Button.kStart.value).onTrue(new InstantCommand(()->{ drivetrain.setOdometryPosition(1.36, 5.5, 0); }));
-
-      new JoystickButton(xbox, Button.kRightBumper.value).onTrue(new ClimbMimic());
+    new JoystickButton(xbox, Button.kRightBumper.value).whileTrue(new Wheelie());
     /** 
      * BINDINGS
      * Left joystick - fowards and backwards

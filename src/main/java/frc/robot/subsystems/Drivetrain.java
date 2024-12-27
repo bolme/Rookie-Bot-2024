@@ -58,7 +58,10 @@ public class Drivetrain extends SubsystemBase {
 
   public static Optional<Alliance> alliance;
 
-  public static enum Position { AMP_SIDE_SPEAKER, MIDDLE_SPEAKER, SOURCE_SIDE_SPEAKER, CUSTOM_MOBILITY, CUSTOM }
+  public static enum Position {
+    AMP_SIDE_SPEAKER, MIDDLE_SPEAKER, SOURCE_SIDE_SPEAKER, CUSTOM_MOBILITY, CUSTOM
+  }
+
   public static Position position = Position.MIDDLE_SPEAKER;
 
   private final double maxSpeed = 1;
@@ -66,26 +69,25 @@ public class Drivetrain extends SubsystemBase {
   private static DifferentialDriveOdometry odometry;
 
   public static Drivetrain getInstance() {
-    instance = (instance != null) ? instance : new Drivetrain(); 
-    
-    return instance; 
+    instance = (instance != null) ? instance : new Drivetrain();
+
+    return instance;
   }
 
   private Drivetrain() {
     pid = new PIDController(P, I, D);
     targetAngle = getAngle();
 
-    NetworkTableEntry nSetpoint = inst.getTable("Drivetrain").getEntry("Setpoint");    
-    nSetpoint.setPersistent();   
-
+    NetworkTableEntry nSetpoint = inst.getTable("Drivetrain").getEntry("Setpoint");
+    nSetpoint.setPersistent();
 
     left_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainLeader);
     right_motor = new WPI_TalonSRX(Constants.MotorIds.rightDrivetrainLeader);
-    left_follow_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainFollower);                                  // |
-    right_follow_motor = new WPI_TalonSRX(Constants.MotorIds.rightDrivetrainFollower);                                // v
-    // why did i do this, this is why a hole is in the wall:  right_follow_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainLeader); 
+    left_follow_motor = new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainFollower); // |
+    right_follow_motor = new WPI_TalonSRX(Constants.MotorIds.rightDrivetrainFollower); // v
+    // why did i do this, this is why a hole is in the wall: right_follow_motor =
+    // new WPI_TalonSRX(Constants.MotorIds.leftDrivetrainLeader);
 
-    
     left_follow_motor.follow(left_motor);
     right_follow_motor.follow(right_motor);
 
@@ -94,11 +96,10 @@ public class Drivetrain extends SubsystemBase {
     left_follow_motor.setNeutralMode(NeutralMode.Brake);
     right_follow_motor.setNeutralMode(NeutralMode.Brake);
 
-
     differentialDrive = new DifferentialDrive(left_motor, right_motor);
     Drivetrain.odometry = new DifferentialDriveOdometry(
         getRotation2d(),
-        getLeftDistance(), 
+        getLeftDistance(),
         getRightDistance(),
         new Pose2d(0.0, 0, new Rotation2d()));
     field = new Field2d();
@@ -109,25 +110,45 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
+    inst.getTable("Drivetrain").getEntry("RawGyroX").setDouble(navX.getRawGyroX());
+    inst.getTable("Drivetrain").getEntry("RawGyroY").setDouble(navX.getRawGyroY());
+    inst.getTable("Drivetrain").getEntry("RawGyroZ").setDouble(navX.getRawGyroZ());
+    inst.getTable("Drivetrain").getEntry("RawAccelX").setDouble(navX.getRawAccelX());
+    inst.getTable("Drivetrain").getEntry("RawAccelY").setDouble(navX.getRawAccelY());
+    inst.getTable("Drivetrain").getEntry("RawAccelZ").setDouble(navX.getRawAccelZ());
+    inst.getTable("Drivetrain").getEntry("RawMagX").setDouble(navX.getRawMagX());
+    inst.getTable("Drivetrain").getEntry("RawMagY").setDouble(navX.getRawMagY());
+    inst.getTable("Drivetrain").getEntry("RawMagZ").setDouble(navX.getRawMagZ());
+    inst.getTable("Drivetrain").getEntry("Pitch").setDouble(navX.getPitch());
+    inst.getTable("Drivetrain").getEntry("Roll").setDouble(navX.getRoll());
+    inst.getTable("Drivetrain").getEntry("Yaw").setDouble(navX.getYaw());
+    inst.getTable("Drivetrain").getEntry("CompassHeading").setDouble(navX.getCompassHeading());
+
+
+    double TiltAngle = getTiltAngle();
+    inst.getTable("Drivetrain").getEntry("TiltAngle").setDouble(TiltAngle);
+
     double currentAngle = getAngle();
     inst.getTable("Drivetrain").getEntry("Angle").setDouble(currentAngle);
     inst.getTable("Drivetrain").getEntry("Setpoint").setDouble(targetAngle);
 
-    inst.getTable("Drivetrain").getEntry("Left Distance").setDouble((left_motor.getSelectedSensorPosition()) * Constants.encoderRotationToMeters);
-    inst.getTable("Drivetrain").getEntry("Right Distance").setDouble((right_follow_motor.getSelectedSensorPosition()) * Constants.encoderRotationToMeters);
-    if(autonomous) {
+    inst.getTable("Drivetrain").getEntry("Left Distance")
+        .setDouble((left_motor.getSelectedSensorPosition()) * Constants.encoderRotationToMeters);
+    inst.getTable("Drivetrain").getEntry("Right Distance")
+        .setDouble((right_follow_motor.getSelectedSensorPosition()) * Constants.encoderRotationToMeters);
+    if (autonomous) {
       targetAngle = Math.max(-180, Math.min(targetAngle, 180));
       pid.setSetpoint(targetAngle);
       pidError = Math.abs(currentAngle - targetAngle);
       pidOutput = pid.calculate(currentAngle);// * (pidError > 0 ? 0 : -1);
-      
+
       return;
     } else {
       pidOutput = 0;
     }
     Drivetrain.robotPose = Drivetrain.odometry.update(
         getRotation2d(),
-        getLeftDistance(), 
+        getLeftDistance(),
         getRightDistance());
     field.setRobotPose(Drivetrain.odometry.getPoseMeters());
     this.drive(Robot.xbox.getRightX(), Robot.xbox.getLeftY());
@@ -137,37 +158,49 @@ public class Drivetrain extends SubsystemBase {
     differentialDrive.arcadeDrive(percent_x + pidOutput, percent_y);
   }
 
-  public double getAngle() {
-    return navX.getAngle() % 180;
+  public double getTiltAngle() {
+    return navX.getRoll(); // *180/Math.PI;
   }
+
+  public double getAngle() {
+    return navX.getAngle() % 180; // TODO: I think this is wrong
+  }
+
   public double getAbsoluteAngle() {
     return navX.getAngle();
   }
+
   public Rotation2d getRotation2d() {
     return navX.getRotation2d();
   }
-  
+
   public void resetGyro() {
     navX.reset();
     targetAngle = getAngle();
   }
+
   public void resetPositionToZero() {
     Drivetrain.setOdometryPosition(0, 0, 0);
   }
+
   public double getLeftDistance() {
     return (left_motor.getSelectedSensorPosition()) * Constants.encoderRotationToMeters;
   }
+
   public double getRightDistance() {
     return (right_follow_motor.getSelectedSensorPosition()) * Constants.encoderRotationToMeters;
   }
+
   public static void setOdometryPosition(double x, double y, double rotation) {
     Drivetrain drtr = Drivetrain.getInstance();
-    odometry.resetPosition(drtr.getRotation2d(), drtr.getLeftDistance(), drtr.getRightDistance(), new Pose2d(x, y, new Rotation2d(Math.toRadians(rotation))));
+    odometry.resetPosition(drtr.getRotation2d(), drtr.getLeftDistance(), drtr.getRightDistance(),
+        new Pose2d(x, y, new Rotation2d(Math.toRadians(rotation))));
   }
+
   public static void setOdometryBasedOnPosition() {
     alliance = DriverStation.getAlliance();
-    if(alliance.get() == Alliance.Blue) {
-      switch(position) {
+    if (alliance.get() == Alliance.Blue) {
+      switch (position) {
         case AMP_SIDE_SPEAKER:
           // TODO: Update to correct pose
           Drivetrain.setOdometryPosition(0.8, 6.7, 60);
@@ -181,7 +214,7 @@ public class Drivetrain extends SubsystemBase {
           break;
       }
     } else if (alliance.get() == Alliance.Red) {
-      switch(position) {
+      switch (position) {
         case AMP_SIDE_SPEAKER:
           // TODO: Update to correct pose
           Drivetrain.setOdometryPosition(0, 0, 0);
